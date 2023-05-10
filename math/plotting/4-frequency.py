@@ -14,4 +14,12 @@ The bars should be outlined in black
 np.random.seed(5)
 student_grades = np.random.normal(68, 15, 50)
 
-# your code here
+plt.hist(student_grades, facecolor="#428abd", edgecolor="black",
+         bins=range(0, 101, 10), linewidth=0.75)
+plt.title("Project A")
+plt.xlabel('Grades')
+plt.ylabel('Number of Students')
+plt.xticks(ticks=range(0, 101, 10))
+plt.xlim([0, 100])
+plt.ylim([0, 30])
+plt.show()
