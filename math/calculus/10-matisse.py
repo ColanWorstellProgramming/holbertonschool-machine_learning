@@ -10,9 +10,7 @@ def poly_derivative(poly):
         return [0]
 
     ret = [None for _ in poly[:-1]]
-    print(ret)
     for x in range(1, len(poly)):
-        ret[x] = poly[x] * x
-        print(ret[x])
+        ret[x-1] = poly[x] * x
 
-    return -111
+    return ret
