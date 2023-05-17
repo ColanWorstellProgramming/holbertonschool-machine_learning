@@ -4,7 +4,10 @@
 
 def summation_i_squared(n):
     """Addition With Sigma"""
-    return recursive_summation(n, 1, 0)
+    if n > 1:
+        return recursive_summation(n, 1, 0)
+    else:
+        return None
 
 
 def recursive_summation(n, x, i):
