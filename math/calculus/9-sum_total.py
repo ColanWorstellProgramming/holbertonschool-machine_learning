@@ -6,6 +6,7 @@ def summation_i_squared(n):
     """Addition With Sigma"""
     return recursive_summation(n, 1, 0)
 
+
 def recursive_summation(n, x, i):
     """helper function"""
     if x <= n:
