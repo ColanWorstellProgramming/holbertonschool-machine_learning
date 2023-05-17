@@ -6,6 +6,8 @@ def poly_derivative(poly):
     """poly math, actually pretty fun"""
     if not isinstance(poly, list):
         return None
+    if len(poly) == 0:
+        return None
     if len(poly) == 1:
         return [0]
 
