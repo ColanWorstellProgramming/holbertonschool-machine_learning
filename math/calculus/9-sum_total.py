@@ -4,13 +4,12 @@
 
 def summation_i_squared(n):
     """Addition With Sigma"""
-    x = 1
-    i = 0
+    return recursive_summation(n, 1, 0)
 
-    while x <= n:
+def recursive_summation(n, x, i):
+    """helper function"""
+    if x <= n:
         i = i + x ** 2
-        x += 1
-        print(i)
-
-    return i
-
+        return recursive_summation(n, x + 1, i)
+    else:
+        return i
