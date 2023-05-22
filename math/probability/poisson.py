@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Poisson"""
-import numpy as np
+
 
 class Poisson:
     """Poisson Class"""
