@@ -41,19 +41,13 @@ class Poisson:
     def cdf(self, k):
         """cdf calculations"""
 
-        i = int(k)
-
         if k < 0:
             return 0
 
-        return (self.summation(i) * self.pmf(i))
+        i = int(k)
+        prob = 0
 
-    def summation(self, k):
-        """summation sigma function"""
+        for x in range(i + 1):
+            prob += self.pmf(x)
 
-        j = 0
-
-        for x in range(k + 1):
-            j += x
-
-        return j
+        return (prob)
