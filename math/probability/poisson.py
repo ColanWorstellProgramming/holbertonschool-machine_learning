@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Poisson"""
 
+e = 2.7182818285
+pi = 3.1415926536
 
 class Poisson:
     """Poisson Class"""
@@ -17,3 +19,13 @@ class Poisson:
             if len(data) < 2:
                 raise ValueError('data must contain multiple values')
             self.lambtha = sum(data) / len(data)
+    def pmf(self, k):
+        """pmf"""
+
+        return ((e ** -self.lambtha) * self.lambtha ** k) / (self.factorial(k))
+
+    def factorial(k):
+        result = 1
+        for i in range(1, k+1):
+            result *= i
+        return result
