@@ -4,6 +4,7 @@
 e = 2.7182818285
 pi = 3.1415926536
 
+
 class Poisson:
     """Poisson Class"""
     def __init__(self, data=None, lambtha=1.):
@@ -23,9 +24,12 @@ class Poisson:
     def pmf(self, k):
         """pmf"""
 
-        return ((e ** -self.lambtha) * self.lambtha ** int(k)) / (self.factorial(int(k)))
+        i = int(k)
+
+        return ((e ** -self.lambtha) * self.lambtha ** i) / (self.factorial(i))
 
     def factorial(self, k):
+        """factorial helper function"""
         result = 1
         for i in range(1, k+1):
             result *= i
