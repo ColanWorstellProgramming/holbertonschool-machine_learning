@@ -46,7 +46,7 @@ class Poisson:
         if k < 0:
             return 0
 
-        return (self.summation(k) * self.pmf(k))
+        return (self.summation(i) * self.pmf(i))
 
     def summation(self, k):
         """summation sigma function"""
