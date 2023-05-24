@@ -26,6 +26,9 @@ class Poisson:
 
         i = int(k)
 
+        if k < 0:
+            return 0
+
         return ((e ** -self.lambtha) * self.lambtha ** i) / (self.factorial(i))
 
     def factorial(self, k):
