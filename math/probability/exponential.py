@@ -20,3 +20,13 @@ class Exponential:
             if len(data) < 2:
                 raise ValueError('data must contain multiple values')
             self.lambtha = lambtha / (sum(data) / len(data))
+
+    def pdf(self, x):
+        """pmf calculations"""
+
+        i = int(x)
+
+        if x < 0:
+            return 0
+
+        return (self.lambtha * (e ** (-self.lambtha * i)))
