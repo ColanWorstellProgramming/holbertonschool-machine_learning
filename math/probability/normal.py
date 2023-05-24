@@ -41,4 +41,5 @@ class Normal:
     def pdf(self, x):
         """pdf calculations"""
 
-        return (1 / (self.stddev * ((2 * pi) ** 0.5))) * (e ** ( -((x - self.mean) ** 2) / (2 * (self.stddev ** 2))))
+        b = -((x - self.mean) ** 2) / (2 * (self.stddev ** 2))
+        return (1 / (self.stddev * ((2 * pi) ** 0.5))) * (e ** (b))
