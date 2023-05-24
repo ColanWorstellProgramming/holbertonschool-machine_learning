@@ -37,3 +37,11 @@ class Normal:
     def x_value(self, z):
         """x_value"""
         return ((self.stddev * z) + self.mean)
+
+    def pdf(self, x):
+        """pdf calculations"""
+
+        if x < 0:
+            return 0
+
+        return (self.lambtha * (e ** (-self.lambtha * x)))
