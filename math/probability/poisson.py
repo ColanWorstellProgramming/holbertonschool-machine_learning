@@ -22,7 +22,7 @@ class Poisson:
             self.lambtha = sum(data) / len(data)
 
     def pmf(self, k):
-        """pmf"""
+        """pmf calculations"""
 
         i = int(k)
 
