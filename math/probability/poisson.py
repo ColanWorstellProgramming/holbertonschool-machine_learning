@@ -23,7 +23,7 @@ class Poisson:
     def pmf(self, k):
         """pmf"""
 
-        return ((e ** -self.lambtha) * self.lambtha ** k) / (self.factorial(k))
+        return ((e ** -self.lambtha) * self.lambtha ** int(k)) / (self.factorial(int(k)))
 
     def factorial(self, k):
         result = 1
