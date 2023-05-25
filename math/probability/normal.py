@@ -47,7 +47,8 @@ class Normal:
     def cdf(self, x):
         """cdf calculations"""
 
-        return ((0.5) * (1 + (self.erf(x - self.mean) / (self.stddev * (2 ** 0.5)))))
+        z = self.z_score(x)
+        return 0.5 * (1 + self.erf(z / 2 ** .5))
 
     def erf(self, x):
         """erf function helper"""
