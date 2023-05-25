@@ -33,3 +33,20 @@ class Binomial:
             n1 = (sum(data) / p1) / len(data)
             self.n = int(round(n1))
             self.p = float(mean/self.n)
+
+    def pmf(self, k):
+        """pmf calculations"""
+
+        k = int(k)
+
+        if k < 0:
+            return 0
+
+        return ((self.factorial(self.n) / (self.factorial(k) * self.factorial(self.n - k))) * (self.p ** k) * ((1 - self.p) ** (self.n - k)))
+
+    def factorial(self, k):
+        """factorial helper function"""
+        result = 1
+        for i in range(1, k+1):
+            result *= i
+        return result
