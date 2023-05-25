@@ -43,3 +43,18 @@ class Normal:
 
         b = -((x - self.mean) ** 2) / (2 * (self.stddev ** 2))
         return (1 / (self.stddev * ((2 * pi) ** 0.5))) * (e ** (b))
+
+    def cdf(self, x):
+        """cdf calculations"""
+
+        return ((0.5) * (1 + (self.erf(x - self.mean) / (self.stddev * (2 ** 0.5)))))
+
+    def erf(self, x):
+        """erf function helper"""
+        a = (2 / (pi ** 0.5))
+        b = ((x ** 3) / 3)
+        c = ((x ** 5) / 10)
+        d = ((x ** 7) / 42)
+        e = ((x ** 9) / 216)
+
+        return a * (x - b + c - d + e)
