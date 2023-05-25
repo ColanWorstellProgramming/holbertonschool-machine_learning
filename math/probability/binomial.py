@@ -42,7 +42,8 @@ class Binomial:
         if k < 0:
             return 0
 
-        a = (self.factorial(self.n) / (self.factorial(k) * self.factorial(self.n - k)))
+        c = (self.factorial(k) * self.factorial(self.n - k))
+        a = (self.factorial(self.n) / c)
 
         return (a * (self.p ** k) * ((1 - self.p) ** (self.n - k)))
 
