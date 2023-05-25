@@ -42,7 +42,9 @@ class Binomial:
         if k < 0:
             return 0
 
-        return ((self.factorial(self.n) / (self.factorial(k) * self.factorial(self.n - k))) * (self.p ** k) * ((1 - self.p) ** (self.n - k)))
+        a = (self.factorial(self.n) / (self.factorial(k) * self.factorial(self.n - k)))
+
+        return (a * (self.p ** k) * ((1 - self.p) ** (self.n - k)))
 
     def factorial(self, k):
         """factorial helper function"""
