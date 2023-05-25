@@ -53,3 +53,16 @@ class Binomial:
         for i in range(1, k+1):
             result *= i
         return result
+
+    def cdf(self, k):
+        """cdf calculations"""
+        if k < 0:
+            return 0
+
+        i = int(k)
+        prob = 0
+
+        for x in range(i + 1):
+            prob += self.pmf(x)
+
+        return (prob)
