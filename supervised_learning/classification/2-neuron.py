@@ -17,10 +17,12 @@ class Neuron:
         self.__A = 0
 
     def forward_prop(self, X):
-        self.__A = self.sigmoid(np.dot(self.__W, X))
+        """Forward Propogation"""
+        self.__A = self.sigmoid(np.matmul(self.__W, X) + self.__b)
         return self.__A
 
     def sigmoid(self, X):
+        """Sigmoid Helper"""
         return 1 / (1 + np.exp(-X))
 
     @property
