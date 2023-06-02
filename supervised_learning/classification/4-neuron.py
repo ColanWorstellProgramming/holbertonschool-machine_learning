@@ -25,9 +25,19 @@ class Neuron:
         """Sigmoid Helper"""
         return 1 / (1 + np.exp(-X))
 
+    def cost(self, Y, A):
+        """Logistical Regression Cost Func"""
+        m = Y.shape[1]
+        j = np.log(1.0000001 - A)
+        return ((-1/m) * np.sum(Y * np.log(A) + (1 - Y) * j))
+
     def evaluate(self, X, Y):
-        """Evaluate"""
-        
+        """Evaluate Func"""
+        A = self.forward_prop(X)
+        predictions = np.where(A >= 0.5, 1, 0)  # Convert probabilities to binary predictions
+
+        return predictions, self.cost(Y, A)
+
 
 
     @property
