@@ -34,11 +34,9 @@ class Neuron:
     def evaluate(self, X, Y):
         """Evaluate Func"""
         A = self.forward_prop(X)
-        predictions = np.where(A >= 0.5, 1, 0)  # Convert probabilities to binary predictions
+        predictions = np.where(A >= 0.5, 1, 0)
 
         return predictions, self.cost(Y, A)
-
-
 
     @property
     def W(self):
