@@ -52,11 +52,11 @@ class NeuralNetwork:
 
         dZ2 = A2 - Y
         dW2 = (1 / m) * np.matmul(dZ2, A1.T)
-        db2 = (1 / m) * np.sum(dZ2)
+        db2 = (1 / m) * np.sum(dZ2, axis=1, keepdims=True)
 
         dZ = np.matmul(self.__W2.T, dZ2) * (A1 * (1 - A1))
         dW = (1 / m) * np.matmul(dZ, X.T)
-        db = (1 / m) * np.sum(dZ)
+        db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
 
         self.__W1 -= alpha * dW
         self.__b1 -= alpha * db
@@ -75,12 +75,10 @@ class NeuralNetwork:
             raise ValueError("alpha must be positive")
 
         for _ in range(iterations):
-            self.forward_prop(X)
+            self.__A1, self.__A2 = self.forward_prop(X)
             self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
 
-        pred, cost = self.evaluate(X, Y)
-
-        return pred, cost
+        return self.evaluate(X, Y)
 
     @property
     def W1(self):
