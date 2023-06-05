@@ -54,7 +54,7 @@ class NeuralNetwork:
         dW2 = (1 / m) * np.matmul(dZ2, A1.T)
         db2 = (1 / m) * np.sum(dZ2)
 
-        dZ = A1 - Y
+        dZ = np.matmul(self.__W2.T, dZ2) * (A1 * (1 - A1))
         dW = (1 / m) * np.matmul(dZ, X.T)
         db = (1 / m) * np.sum(dZ)
 
