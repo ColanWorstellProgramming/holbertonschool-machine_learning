@@ -25,7 +25,6 @@ class DeepNeuralNetwork:
                 j = np.random.randn(layers[i], nx) * np.sqrt(2 / nx)
                 self.weights['W' + str(i + 1)] = j
             else:
-                jjj = np.sqrt(2 / layers[i-1])
-                jj = np.random.randn(layers[i], layers[i-1]) * jjj
+                jj = np.random.randn(layers[i], layers[i-1]) * np.sqrt(2 / layers[i-1])
                 self.weights['W' + str(i + 1)] = jj
             self.weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
