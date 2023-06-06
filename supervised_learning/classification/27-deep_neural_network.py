@@ -54,12 +54,14 @@ class DeepNeuralNetwork:
         """Cost Func"""
 
         m = self.one_hot_decode(Y)
-
         j = np.log(1.0000001 - A)
         return ((-1/m) * np.sum(Y * np.log(A) + (1 - Y) * j))
 
     def evaluate(self, X, Y):
         """Evaluate Func"""
+
+        if isinstance(Y, None):
+            return None
 
         Y = self.one_hot_decode(Y)
 
