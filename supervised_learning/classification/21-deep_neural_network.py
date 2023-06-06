@@ -64,18 +64,26 @@ class DeepNeuralNetwork:
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Gradient Descent"""
         m = Y.shape[1]
+        L = self.__L
 
-        for i in range(self.__L, 0, -1):
-            A = self.__cache['A' + str(i)]
-            A_prev = self.__cache['A' + str(i - 1)]
-            W = self.__weights['W' + str(i)]
-            b = self.__weights['b' + str(i)]
-            dZ = A - Y if i == self.__L else np.matmul(W.T, dZ) * (A * (1 - A))
+        A = cache["A" + str(L)]
+        dZ = A - Y
+
+        for l in range(L, 0, -1):
+            A_prev = cache["A" + str(l - 1)]
+            W = self.__weights["W" + str(l)]
+            b = self.__weights["b" + str(l)]
+
             dW = (1 / m) * np.matmul(dZ, A_prev.T)
             db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+            dA = np.matmul(W.T, dZ)
 
-            self.__weights['W' + str(i)] -= alpha * dW
-            self.__weights['b' + str(i)] -= alpha * db
+            self.__weights["W" + str(l)] -= alpha * dW
+            self.__weights["b" + str(l)] -= alpha * db
+
+            if l > 1:
+                dZ = dA * (A_prev * (1 - A_prev))
+
 
     @property
     def L(self):
