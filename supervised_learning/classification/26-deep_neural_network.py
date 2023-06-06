@@ -110,15 +110,23 @@ class DeepNeuralNetwork:
             if verbose == True and i % step == 0:
                 print("Cost after {} iterations: {}".format(i, self.cost(Y, A)))
 
-        if graph == True:
-            if i == 0 or i % step == 0:
-                    current_cost = self.cost(Y, A)
-                    Ygrp.append(current_cost)
-                    Xgrp.append(i)
-            plt.plot(Xgrp, Ygrp)
-            plt.xlabel('Iteration')
-            plt.ylabel('Cost')
-            plt.title('Training Cost')
+            if graph == True:
+                if i == 0 or i % step == 0:
+                        current_cost = self.cost(Y, A)
+                        Ygrp.append(current_cost)
+                        Xgrp.append(i)
+                plt.plot(Xgrp, Ygrp)
+                plt.xlabel('Iteration')
+                plt.ylabel('Cost')
+                plt.title('Training Cost')
+
+            if verbose or graph:
+                if type(step) is not int:
+                    raise TypeError("step must be in integer")
+                if step <= 0 or step > iterations:
+                    raise ValueError("step must be positive and <= iterations")
+
+        if graph:
             plt.show()
 
         return self.evaluate(X, Y)
@@ -132,7 +140,7 @@ class DeepNeuralNetwork:
             pickle.dump(self, file)
 
     def load(filename):
-        "load a file"
+        """load a file"""
         if not filename.endswith('.pkl'):
             filename += '.pkl'
 
