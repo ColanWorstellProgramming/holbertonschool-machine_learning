@@ -60,7 +60,8 @@ class DeepNeuralNetwork:
     def evaluate(self, X, Y):
         """Evaluate Func"""
 
-        A, _ = self.forward_prop(X)
+        cache = self.forward_prop(X)
+        A = cache["A" + str(self.__L)]
         predictions = np.where(A >= 0.5, 1, 0)
 
         return predictions, self.cost(Y, A)
