@@ -90,9 +90,9 @@ class DeepNeuralNetwork:
 
             if l < L:
                 if self.__activation == 'sig':
-                    dA = A * (1 - A)
+                    dA = A_prev * (1 - A_prev)
                 elif self.__activation == 'tanh':
-                    dA = 1 - np.power(A, 2)
+                    dA = 1 - np.power(A_prev, 2)
 
                 dZ = np.matmul(W.T, dZ) * dA
 
