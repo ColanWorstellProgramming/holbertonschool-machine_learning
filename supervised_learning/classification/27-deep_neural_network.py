@@ -37,24 +37,20 @@ class DeepNeuralNetwork:
         A = X
         self.__cache['A0'] = X
 
-        for i in range(1, self.__L + 1):
+        for i in range(1, self.__L):
             W = self.__weights['W' + str(i)]
             b = self.__weights['b' + str(i)]
             Z = np.matmul(W, A) + b
-
-            if i == self.__L:
-                A = self.softmax(Z)
-            else:
-                A = self.sigmoid(Z)
-
+            A = self.sigmoid(Z)
             self.__cache['A' + str(i)] = A
 
-        return A, self.__cache
+        W = self.__weights['W' + str(self.__L)]
+        b = self.__weights['b' + str(self.__L)]
+        Z = np.matmul(W, A) + b
+        A = self.sigmoid(Z)
+        self.__cache['A' + str(self.__L)] = A
 
-    def softmax(self, X):
-        """Softmax Activation Function"""
-        expZ = np.exp(X)
-        return expZ / np.sum(expZ, axis=0)
+        return A, self.__cache
 
     def sigmoid(self, X):
         """Sigmoid Helper"""
