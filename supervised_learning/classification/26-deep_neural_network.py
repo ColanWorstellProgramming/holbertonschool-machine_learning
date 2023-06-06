@@ -86,7 +86,8 @@ class DeepNeuralNetwork:
             if l > 1:
                 dZ = dA * (A_prev * (1 - A_prev))
 
-    def train(self, X, Y, iterations=5000, alpha=0.05,verbose=True, graph=True, step=100):
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
         """trains the neuron"""
         if type(iterations) is not int:
             raise TypeError("iterations must be an integer")
