@@ -14,7 +14,7 @@ class DeepNeuralNetwork:
         if not isinstance(layers, list):
             raise TypeError("layers must be a list of positive integers")
         if len(layers) < 1 or False in (np.array(layers) > 0):
-            raise ValueError("layers must be a list of positive integers")
+            raise TypeError("layers must be a list of positive integers")
 
         self.L = len(layers)
         self.cache = {}
