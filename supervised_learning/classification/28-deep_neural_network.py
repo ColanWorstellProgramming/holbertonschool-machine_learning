@@ -37,7 +37,6 @@ class DeepNeuralNetwork:
             self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
 
     def forward_prop(self, X):
-        """Forward Propogation"""
         A = X
         self.__cache['A0'] = X
 
@@ -45,7 +44,15 @@ class DeepNeuralNetwork:
             W = self.__weights['W' + str(i)]
             b = self.__weights['b' + str(i)]
             Z = np.matmul(W, A) + b
-            A = self.sigmoid(Z)
+
+            if i < self.__L:
+                if self.__activation == 'sig':
+                    A = self.sigmoid(Z)
+                elif self.__activation == 'tanh':
+                    A = np.tanh(Z)
+            else:
+                A = self.sigmoid(Z)
+
             self.__cache['A' + str(i)] = A
 
         return A, self.__cache
@@ -68,7 +75,6 @@ class DeepNeuralNetwork:
         return predictions, self.cost(Y, A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Gradient Descent"""
         m = Y.shape[1]
         L = self.__L
 
@@ -80,15 +86,18 @@ class DeepNeuralNetwork:
             W = self.__weights["W" + str(l)]
             b = self.__weights["b" + str(l)]
 
+            if l < L:
+                if self.__activation == 'sig':
+                    dA = dZ * (A * (1 - A))
+                elif self.__activation == 'tanh':
+                    dA = dZ * (1 - np.power(A, 2))
+                dZ = np.matmul(W.T, dA)
+
             dW = (1 / m) * np.matmul(dZ, A_prev.T)
             db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
-            dA = np.matmul(W.T, dZ)
 
             self.__weights["W" + str(l)] -= alpha * dW
             self.__weights["b" + str(l)] -= alpha * db
-
-            if l > 1:
-                dZ = dA * (A_prev * (1 - A_prev))
 
     def train(self, X, Y, iterations=5000, alpha=0.05,
               verbose=True, graph=True, step=100):
