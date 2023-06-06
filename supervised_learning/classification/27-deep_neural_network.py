@@ -53,9 +53,8 @@ class DeepNeuralNetwork:
     def cost(self, Y, A):
         """Cost Func"""
 
-        Y = self.one_hot_decode(Y)
+        m = self.one_hot_decode(Y)
 
-        m = Y.shape[1]
         j = np.log(1.0000001 - A)
         return ((-1/m) * np.sum(Y * np.log(A) + (1 - Y) * j))
 
