@@ -60,7 +60,7 @@ class DeepNeuralNetwork:
     def evaluate(self, X, Y):
         """Evaluate Func"""
 
-        if isinstance(Y, None):
+        if Y is None:
             return None
 
         Y = self.one_hot_decode(Y)
