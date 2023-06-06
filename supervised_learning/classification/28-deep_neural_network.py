@@ -37,6 +37,7 @@ class DeepNeuralNetwork:
             self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
 
     def forward_prop(self, X):
+        """Forward Prop"""
         A = X
         self.__cache['A0'] = X
 
@@ -75,6 +76,7 @@ class DeepNeuralNetwork:
         return predictions, self.cost(Y, A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
+        """gradient Descent"""
         m = Y.shape[1]
         L = self.__L
 
@@ -88,10 +90,11 @@ class DeepNeuralNetwork:
 
             if l < L:
                 if self.__activation == 'sig':
-                    dA = dZ * (A * (1 - A))
+                    dA = A * (1 - A)
                 elif self.__activation == 'tanh':
-                    dA = dZ * (1 - np.power(A, 2))
-                dZ = np.matmul(W.T, dA)
+                    dA = 1 - np.power(A, 2)
+
+                dZ = np.matmul(W.T, dZ) * dA
 
             dW = (1 / m) * np.matmul(dZ, A_prev.T)
             db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
