@@ -69,7 +69,7 @@ class DeepNeuralNetwork:
 
         return predictions, self.cost(Y, A)
 
-    def one_hot_decode(one_hot):
+    def one_hot_decode(self, one_hot):
         """Decode Fun"""
         if type(one_hot) is not np.ndarray:
             return None
