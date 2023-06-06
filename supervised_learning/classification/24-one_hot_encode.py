@@ -9,7 +9,7 @@ def one_hot_encode(Y, classes):
     one_hot_matrix = np.zeros((classes, m))
 
     for i in range(m):
-        if Y[i] > 0:
+        if Y[i] >= 0:
             one_hot_matrix[Y[i], i] = 1
 
     return one_hot_matrix
