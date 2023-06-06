@@ -34,15 +34,14 @@ class DeepNeuralNetwork:
 
     def forward_prop(self, X):
         """Forward Propogation"""
-        A = X
-        self.__cache['A0'] = X
-
-        for i in range(1, self.__L + 1):
-            W = self.__weights['W' + str(i)]
-            b = self.__weights['b' + str(i)]
-            Z = np.matmul(W, A) + b
-            A = self.sigmoid(Z)
-            self.__cache['A' + str(i)] = A
+        self.__cache["A0"] = X
+        for l in range(1, self.__L + 1):
+            W = self.__weights["W" + str(l)]
+            b = self.__weights["b" + str(l)]
+            A_prev = self.__cache["A" + str(l - 1)]
+            Z = np.dot(W, A_prev) + b
+            A = 1 / (1 + np.exp(-Z))
+            self.__cache["A" + str(l)] = A
 
         return A, self.__cache
 
@@ -60,8 +59,7 @@ class DeepNeuralNetwork:
     def evaluate(self, X, Y):
         """Evaluate Func"""
 
-        cache = self.forward_prop(X)
-        A = cache["A" + str(self.__L)]
+        A, _ = self.forward_prop(X)
         predictions = np.where(A >= 0.5, 1, 0)
 
         return predictions, self.cost(Y, A)
