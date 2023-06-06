@@ -33,7 +33,7 @@ class DeepNeuralNetwork:
             self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
 
     def forward_prop(self, X):
-        """Forward Propogation"""
+        """Forward Propagation"""
         A = X
         self.__cache['A0'] = X
 
@@ -41,10 +41,20 @@ class DeepNeuralNetwork:
             W = self.__weights['W' + str(i)]
             b = self.__weights['b' + str(i)]
             Z = np.matmul(W, A) + b
-            A = self.sigmoid(Z)
+
+            if i == self.__L:
+                A = self.softmax(Z)
+            else:
+                A = self.sigmoid(Z)
+
             self.__cache['A' + str(i)] = A
 
         return A, self.__cache
+
+    def softmax(self, X):
+        """Softmax Activation Function"""
+        expZ = np.exp(X)
+        return expZ / np.sum(expZ, axis=0)
 
     def sigmoid(self, X):
         """Sigmoid Helper"""
