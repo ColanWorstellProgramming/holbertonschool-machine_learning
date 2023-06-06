@@ -85,23 +85,20 @@ class DeepNeuralNetwork:
             if l > 1:
                 dZ = dA * (A_prev * (1 - A_prev))
 
-    def train(self, X, Y, iterations=5000, alpha=0.05,
-              verbose=True, graph=True, step=100):
-        """
-        Lets train our neural network.
-        X is the input data
-        Y is the correctly labeled data for the input data
-        iterations is how many times we're going to train
-        alpha is our learning rate
-        """
-        if type(iterations) is not int:
+    def train(self, X, Y, iterations=5000, alpha=0.05,verbose=True, graph=True, step=100):
+        """trains the neuron"""
+        if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
-        if iterations <= 0:
+        if iterations < 0:
             raise ValueError("iterations must be a positive integer")
-        if type(alpha) is not float:
+        if not isinstance(alpha, float):
             raise TypeError("alpha must be a float")
-        if alpha <= 0:
+        if alpha < 0:
             raise ValueError("alpha must be positive")
+        if not isinstance(step, int):
+            raise TypeError("step must be an integer")
+        if step <= 0 or step > iterations:
+            raise ValueError("step must be positive and <= iterations")
 
         graphx = []
         graphy = []
@@ -121,11 +118,6 @@ class DeepNeuralNetwork:
                 plt.title("Training Cost")
                 plt.xlabel("iteration")
                 plt.ylabel("cost")
-            if verbose or graph:
-                if type(step) is not int:
-                    raise TypeError("step must be in integer")
-                if step <= 0 or step > iterations:
-                    raise ValueError("step must be positive and <= iterations")
         if graph:
             plt.show()
         return (self.evaluate(X, Y))
@@ -140,11 +132,14 @@ class DeepNeuralNetwork:
 
     def load(filename):
         "load a file"
-        if not filename.endswith('.pkl'):
-            filename += '.pkl'
+        try:
+            if not filename.endswith('.pkl'):
+                filename += '.pkl'
 
-        with open(filename, 'rb') as file:
-            return pickle.load(file)
+            with open(filename, 'rb') as file:
+                return pickle.load(file)
+        except Exception:
+            return None
 
     @property
     def L(self):
