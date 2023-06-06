@@ -84,7 +84,6 @@ class DeepNeuralNetwork:
             if l > 1:
                 dZ = dA * (A_prev * (1 - A_prev))
 
-
     @property
     def L(self):
         """layer getter"""
