@@ -32,12 +32,8 @@ class DeepNeuralNetwork:
                 self.__weights['W' + str(i + 1)] = jj
             self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
 
-    def sigmoid(self, X):
-        """Sigmoid Helper"""
-        return 1 / (1 + np.exp(-X))
-
     def forward_prop(self, X):
-        """Forward Propagation"""
+        """Forward Propogation"""
         A = X
         self.__cache['A0'] = X
 
@@ -45,36 +41,41 @@ class DeepNeuralNetwork:
             W = self.__weights['W' + str(i)]
             b = self.__weights['b' + str(i)]
             Z = np.matmul(W, A) + b
-
-            if i == self.__L:
-                A = self.softmax(Z)
-            else:
-                A = self.sigmoid(Z)
-
+            A = self.sigmoid(Z)
             self.__cache['A' + str(i)] = A
 
         return A, self.__cache
 
+    def sigmoid(self, X):
+        """Sigmoid Helper"""
+        return 1 / (1 + np.exp(-X))
+
     def cost(self, Y, A):
-        """Cost Function"""
+        """Cost Func"""
+
+        Y = self.one_hot_decode(Y)
+
         m = Y.shape[1]
-        cost = -np.sum(Y * np.log(A)) / m
-        return cost
+        j = np.log(1.0000001 - A)
+        return ((-1/m) * np.sum(Y * np.log(A) + (1 - Y) * j))
 
     def evaluate(self, X, Y):
-        """Evaluate Function"""
-        A, _ = self.forward_prop(X)
-        predictions = np.argmax(A, axis=0)
-        true_labels = np.argmax(Y, axis=0)
-        accuracy = np.sum(predictions == true_labels) / Y.shape[1]
-        cost = self.cost(Y, A)
-        return predictions, accuracy, cost
+        """Evaluate Func"""
 
-    def softmax(self, X):
-        """Softmax Function"""
-        exp_scores = np.exp(X)
-        softmax_scores = exp_scores / np.sum(exp_scores, axis=0)
-        return softmax_scores
+        Y = self.one_hot_decode(Y)
+
+        A, _ = self.forward_prop(X)
+        predictions = np.where(A >= 0.5, 1, 0)
+
+        return predictions, self.cost(Y, A)
+
+    def one_hot_decode(one_hot):
+        """Decode Fun"""
+        if type(one_hot) is not np.ndarray:
+            return None
+        if one_hot.ndim != 2:
+            return None
+        return np.argmax(one_hot, axis=0)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Gradient Descent"""
