@@ -85,51 +85,50 @@ class DeepNeuralNetwork:
             if l > 1:
                 dZ = dA * (A_prev * (1 - A_prev))
 
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
-        """Trains the neuron"""
-        if not isinstance(iterations, int):
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
+        """
+        Lets train our neural network.
+        X is the input data
+        Y is the correctly labeled data for the input data
+        iterations is how many times we're going to train
+        alpha is our learning rate
+        """
+        if type(iterations) is not int:
             raise TypeError("iterations must be an integer")
-        if iterations < 0:
+        if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
-        if not isinstance(alpha, float):
+        if type(alpha) is not float:
             raise TypeError("alpha must be a float")
-        if alpha < 0:
+        if alpha <= 0:
             raise ValueError("alpha must be positive")
-        if not isinstance(step, int):
-            raise TypeError("step must be an integer")
-        if step <= 0 or step > iterations:
-            raise ValueError("step must be positive and <= iterations")
 
-        Xgrp = []
-        Ygrp = []
-
-        for i in range(iterations + 1):
+        graphx = []
+        graphy = []
+        for i in range(0, iterations):
             A, cache = self.forward_prop(X)
             self.gradient_descent(Y, self.__cache, alpha)
-
-            if verbose == True and i % step == 0:
-                print("Cost after {} iterations: {}".format(i, self.cost(Y, A)))
-
-            if graph == True:
+            if verbose:
                 if i == 0 or i % step == 0:
-                        current_cost = self.cost(Y, A)
-                        Ygrp.append(current_cost)
-                        Xgrp.append(i)
-                plt.plot(Xgrp, Ygrp)
-                plt.xlabel('Iteration')
-                plt.ylabel('Cost')
-                plt.title('Training Cost')
-
+                    print("Cost after {} iterations: {}"
+                          .format(i, self.cost(Y, A)))
+            if graph:
+                if i == 0 or i % step == 0:
+                    current_cost = self.cost(Y, A)
+                    graphy.append(current_cost)
+                    graphx.append(i)
+                plt.plot(graphx, graphy)
+                plt.title("Training Cost")
+                plt.xlabel("iteration")
+                plt.ylabel("cost")
             if verbose or graph:
                 if type(step) is not int:
                     raise TypeError("step must be in integer")
                 if step <= 0 or step > iterations:
                     raise ValueError("step must be positive and <= iterations")
-
         if graph:
             plt.show()
-
-        return self.evaluate(X, Y)
+        return (self.evaluate(X, Y))
 
     def save(self, filename):
         """save a file"""
@@ -140,7 +139,7 @@ class DeepNeuralNetwork:
             pickle.dump(self, file)
 
     def load(filename):
-        """load a file"""
+        "load a file"
         if not filename.endswith('.pkl'):
             filename += '.pkl'
 
