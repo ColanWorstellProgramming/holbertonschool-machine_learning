@@ -69,6 +69,7 @@ class DeepNeuralNetwork:
             A = self.__cache['A' + str(i)]
             A_prev = self.__cache['A' + str(i - 1)]
             W = self.__weights['W' + str(i)]
+            b = self.__weights['b' + str(i)]
             dZ = A - Y if i == self.__L else np.matmul(W.T, dZ) * (A * (1 - A))
             dW = (1 / m) * np.matmul(dZ, A_prev.T)
             db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
