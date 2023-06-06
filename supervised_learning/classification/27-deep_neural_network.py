@@ -50,32 +50,32 @@ class DeepNeuralNetwork:
         """Sigmoid Helper"""
         return 1 / (1 + np.exp(-X))
 
-    def cost(self, Y, A):
-        """Cost Func"""
-
-        if Y is None:
-            return None
-
-        m = self.one_hot_decode(Y).shape[1]
-
-        j = np.log(1.0000001 - A)
-        return ((-1/m) * np.sum(Y * np.log(A) + (1 - Y) * j))
-
     def evaluate(self, X, Y):
         """Evaluate Func"""
-
         if Y is None:
             return None
 
-        Y = self.one_hot_decode(Y)
-
         A, _ = self.forward_prop(X)
-        predictions = np.where(A >= 0.5, 1, 0)
+        predictions = np.argmax(A, axis=0)
+        Y = np.argmax(Y, axis=0)
 
         return predictions, self.cost(Y, A)
 
+    def cost(self, Y, A):
+        """Cost Func"""
+        if Y is None:
+            return None
+
+        m = Y.shape[0]
+        cost = -np.sum(np.log(A[Y, np.arange(m)])) / m
+        return cost
+
     def one_hot_decode(self, one_hot):
         """Decode Fun"""
+        if type(one_hot) is not np.ndarray:
+            return None
+        if one_hot.ndim != 2:
+            return None
         return np.argmax(one_hot, axis=0)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
