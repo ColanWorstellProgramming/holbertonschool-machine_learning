@@ -56,7 +56,8 @@ class DeepNeuralNetwork:
         if Y is None:
             return None
 
-        m = self.one_hot_decode(Y)
+        m = self.one_hot_decode(Y).shape[1]
+
         j = np.log(1.0000001 - A)
         return ((-1/m) * np.sum(Y * np.log(A) + (1 - Y) * j))
 
