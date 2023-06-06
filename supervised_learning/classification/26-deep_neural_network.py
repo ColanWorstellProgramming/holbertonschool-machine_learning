@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
-
 class DeepNeuralNetwork:
     """Neural Network Class"""
     def __init__(self, nx, layers):
@@ -88,22 +87,17 @@ class DeepNeuralNetwork:
 
     def train(self, X, Y, iterations=5000, alpha=0.05,verbose=True, graph=True, step=100):
         """trains the neuron"""
-        if not isinstance(iterations, int):
+        if type(iterations) is not int:
             raise TypeError("iterations must be an integer")
-        if iterations < 0:
+        if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
-        if not isinstance(alpha, float):
+        if type(alpha) is not float:
             raise TypeError("alpha must be a float")
-        if alpha < 0:
+        if alpha <= 0:
             raise ValueError("alpha must be positive")
-        if not isinstance(step, int):
-            raise TypeError("step must be an integer")
-        if step <= 0 or step > iterations:
-            raise ValueError("step must be positive and <= iterations")
 
-        Xgrp = []
-        Ygrp = []
-        
+        graphx = []
+        graphy = []
         for i in range(0, iterations):
             A, cache = self.forward_prop(X)
             self.gradient_descent(Y, self.__cache, alpha)
@@ -114,12 +108,17 @@ class DeepNeuralNetwork:
             if graph:
                 if i == 0 or i % step == 0:
                     current_cost = self.cost(Y, A)
-                    Ygrp.append(current_cost)
-                    Xgrp.append(i)
-                plt.plot(Xgrp, Ygrp)
+                    graphy.append(current_cost)
+                    graphx.append(i)
+                plt.plot(graphx, graphy)
                 plt.title("Training Cost")
                 plt.xlabel("iteration")
                 plt.ylabel("cost")
+            if verbose or graph:
+                if type(step) is not int:
+                    raise TypeError("step must be in integer")
+                if step <= 0 or step > iterations:
+                    raise ValueError("step must be positive and <= iterations")
         if graph:
             plt.show()
         return (self.evaluate(X, Y))
