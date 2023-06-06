@@ -96,24 +96,28 @@ class DeepNeuralNetwork:
         if alpha <= 0:
             raise ValueError("alpha must be positive")
 
-        graphx = []
-        graphy = []
-        for i in range(0, iterations):
+        Xgrp = []
+        Ygrp = []
+
+        for i in range(iterations):
             A, cache = self.forward_prop(X)
             self.gradient_descent(Y, self.__cache, alpha)
+
             if verbose:
                 if i == 0 or i % step == 0:
                     print("Cost after {} iterations: {}"
                           .format(i, self.cost(Y, A)))
+
             if graph:
                 if i == 0 or i % step == 0:
                     current_cost = self.cost(Y, A)
-                    graphy.append(current_cost)
-                    graphx.append(i)
-                plt.plot(graphx, graphy)
-                plt.title("Training Cost")
-                plt.xlabel("iteration")
-                plt.ylabel("cost")
+                    Ygrp.append(current_cost)
+                    Xgrp.append(i)
+                plt.plot(Xgrp, Ygrp)
+                plt.xlabel('Iteration')
+                plt.ylabel('Cost')
+                plt.title('Training Cost')
+
             if verbose or graph:
                 if type(step) is not int:
                     raise TypeError("step must be in integer")
