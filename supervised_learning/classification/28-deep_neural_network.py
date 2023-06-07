@@ -95,7 +95,7 @@ class DeepNeuralNetwork:
                 dz = A - Y
             else:
                 if self.__activation == 'sig':
-                    dz = da * self.sigmoid_derivative(A)
+                    dz = da * self.sigmoid(A)
                 elif self.__activation == 'tanh':
                     dz = da * (1 - A**2)
             dw = np.dot(dz, A_prev.T) / m
