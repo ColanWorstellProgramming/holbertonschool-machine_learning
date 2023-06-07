@@ -69,32 +69,27 @@ class DeepNeuralNetwork:
         """Evaluate Func"""
 
         A, _ = self.forward_prop(X)
-        predictions = np.where(A == np.amax(A, axis=0), 1, 0)
+        predictions = np.where(A >= 0.5, 1, 0)
 
         return predictions, self.cost(Y, A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Gradient Descent"""
         m = Y.shape[1]
-        L = self.__L
-
-        A = cache["A" + str(L)]
-        dZ = A - Y
-
-        for l in range(L, 0, -1):
-            A_prev = cache["A" + str(l - 1)]
-            W = self.__weights["W" + str(l)]
-            b = self.__weights["b" + str(l)]
-
-            dW = (1 / m) * np.matmul(dZ, A_prev.T)
-            db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
-            dA = np.matmul(W.T, dZ)
-
-            self.__weights["W" + str(l)] -= alpha * dW
-            self.__weights["b" + str(l)] -= alpha * db
-
-            if l > 1:
-                dZ = dA * (A_prev * (1 - A_prev))
+        for i in reversed(range(1, self.__L + 1)):
+            A = cache['A' + str(i)]
+            A_prev = cache['A' + str(i - 1)]
+            W = self.__weights['W' + str(i)]
+            if i == self.__L:
+                dz = A - Y
+            else:
+                dz = da * self.sigmoid_derivative(A)
+            dw = np.dot(dz, A_prev.T) / m
+            db = np.sum(dz, axis=1, keepdims=True) / m
+            if i > 1:
+                da = np.dot(W.T, dz)
+            self.__weights['W' + str(i)] -= alpha * dw
+            self.__weights['b' + str(i)] -= alpha * db
 
     def train(self, X, Y, iterations=5000, alpha=0.05,
               verbose=True, graph=True, step=100):
