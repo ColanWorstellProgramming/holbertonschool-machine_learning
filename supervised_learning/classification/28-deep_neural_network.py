@@ -37,46 +37,54 @@ class DeepNeuralNetwork:
             self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
 
     def forward_prop(self, X):
-        """Forward Prop"""
-        A = X
+        """Forward Propogation"""
+
         self.__cache['A0'] = X
 
         for i in range(1, self.__L + 1):
-            W = self.__weights['W' + str(i)]
-            b = self.__weights['b' + str(i)]
-            Z = np.matmul(W, A) + b
-
-            if i < self.__L:
-                if self.__activation == 'sig':
-                    A = self.sigmoid(Z)
-                elif self.__activation == 'tanh':
-                    A = np.tanh(Z)
+            B = self.__weights['b' + str(i)]
+            A = self.__cache['A' + str(i - 1)]
+            Z = np.dot(self.__weights['W' + str(i)], A) + B
+            if i == self.activation == "tanh":
+                self.__cache['A' + str(i)] = self.softmax(Z)
+            elif i == self.activation == "sig":
+                self.__cache['A' + str(i)] = self.sigmoid(Z)
             else:
-                A = self.sigmoid(Z)
+                raise ValueError("activation must be 'sig' or 'tanh'")
 
-            self.__cache['A' + str(i)] = A
+        for key, value in self.__cache.items():
+            self.__cache[key] = np.round(value, 10)
 
-        return A, self.__cache
+        return self.__cache["A{}".format(self.__L)], self.__cache
 
     def sigmoid(self, X):
         """Sigmoid Helper"""
         return 1 / (1 + np.exp(-X))
 
+    def softmax(self, Z):
+        """Softmax activation function"""
+        exps = np.exp(Z - np.max(Z))
+        return exps / np.sum(exps, axis=0)
+
     def cost(self, Y, A):
         """Cost Func"""
+
         m = Y.shape[1]
-        j = np.log(1.0000001 - A)
-        return ((-1/m) * np.sum(Y * np.log(A) + (1 - Y) * j))
+
+        cost = (-1 / m) * np.sum(Y * np.log(A))
+        cost = np.round(cost, 10)
+        return cost
 
     def evaluate(self, X, Y):
         """Evaluate Func"""
+
         A, _ = self.forward_prop(X)
-        predictions = np.where(A >= 0.5, 1, 0)
+        predictions = np.where(A == np.amax(A, axis=0), 1, 0)
 
         return predictions, self.cost(Y, A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """gradient Descent"""
+        """Gradient Descent"""
         m = Y.shape[1]
         L = self.__L
 
@@ -88,19 +96,15 @@ class DeepNeuralNetwork:
             W = self.__weights["W" + str(l)]
             b = self.__weights["b" + str(l)]
 
-            if l < L:
-                if self.__activation == 'sig':
-                    dA = A_prev * (1 - A_prev)
-                elif self.__activation == 'tanh':
-                    dA = 1 - np.power(A_prev, 2)
-
-                dZ = np.matmul(W.T, dZ) * dA
-
             dW = (1 / m) * np.matmul(dZ, A_prev.T)
             db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+            dA = np.matmul(W.T, dZ)
 
             self.__weights["W" + str(l)] -= alpha * dW
             self.__weights["b" + str(l)] -= alpha * db
+
+            if l > 1:
+                dZ = dA * (A_prev * (1 - A_prev))
 
     def train(self, X, Y, iterations=5000, alpha=0.05,
               verbose=True, graph=True, step=100):
@@ -172,13 +176,14 @@ class DeepNeuralNetwork:
 
     @property
     def cache(self):
-        """itermed val getter"""
+        '''itermed val getter'''
         return self.__cache
 
     @property
     def weights(self):
-        """weight getter"""
+        '''weight getter'''
         return self.__weights
+
 
     @property
     def activation(self):
