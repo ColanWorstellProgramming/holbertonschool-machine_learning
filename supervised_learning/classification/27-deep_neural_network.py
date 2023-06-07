@@ -69,7 +69,7 @@ class DeepNeuralNetwork:
         """Evaluate Func"""
 
         A, _ = self.forward_prop(X)
-        predictions = np.where(A >= 0.5, 1, 0)
+        predictions = np.where(A == np.amax(A, axis=0), 1, 0)
 
         return predictions, self.cost(Y, A)
 
