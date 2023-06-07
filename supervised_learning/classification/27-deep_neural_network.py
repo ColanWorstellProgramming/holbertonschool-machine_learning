@@ -38,9 +38,8 @@ class DeepNeuralNetwork:
         self.__cache['A0'] = X
 
         for i in range(1, self.__L + 1):
-            W = self.__weights['W' + str(i)]
-            b = self.__weights['b' + str(i)]
-            Z = np.matmul(W, A) + b
+            Z = (self.__weights['W' + str(i)],
+                        self.__cache['A' + str(i - 1)]) + self.__weights['b' + str(i)]
             if i == self.__L:
                 self.__cache['A' + str(i)] = self.softmax(Z)
             else:
@@ -65,7 +64,7 @@ class DeepNeuralNetwork:
 
         m = Y.shape[1]
 
-        cost = -1/m*np.sum(Y*np.log(A))
+        cost = -1 / m * np.sum(Y * np.log(A))
         cost = np.round(cost,10)
         return cost
 
