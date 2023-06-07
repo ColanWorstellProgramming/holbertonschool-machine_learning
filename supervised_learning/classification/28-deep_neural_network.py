@@ -177,3 +177,8 @@ class DeepNeuralNetwork:
     def cache(self):
         '''itermed val getter'''
         return self.__cache
+
+    @property
+    def weights(self):
+        '''weight getter'''
+        return self.__weights
