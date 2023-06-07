@@ -56,10 +56,10 @@ class DeepNeuralNetwork:
         m = Y.shape[1]
 
 
-        j = np.log(1.0000001 - A)
+        # j = np.log(1.0000001 - A)
         # return ((-1/m) * np.sum(Y * np.log(A) + (1 - Y) * j))
 
-        cost = -1/m*np.sum(Y*np.log(A) * j)
+        cost = -1/m*np.sum(Y*np.log(A))
         cost = np.round(cost,10)
         return cost
 
