@@ -83,7 +83,7 @@ class DeepNeuralNetwork:
             if i == self.__L:
                 dz = A - Y
             else:
-                dz = da * self.sigmoid_derivative(A)
+                dz = da * self.sigmoid(A)
             dw = np.dot(dz, A_prev.T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
             if i > 1:
