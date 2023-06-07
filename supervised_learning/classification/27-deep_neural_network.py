@@ -39,8 +39,8 @@ class DeepNeuralNetwork:
 
         for i in range(1, self.__L + 1):
             B = self.__weights['b' + str(i)]
-            Z = np.dot(self.__weights['W' + str(i)],
-                        self.__cache['A' + str(i - 1)]) + B
+            A = self.__cache['A' + str(i - 1)]
+            Z = np.dot(self.__weights['W' + str(i)], A) + B
             if i == self.__L:
                 self.__cache['A' + str(i)] = self.softmax(Z)
             else:
