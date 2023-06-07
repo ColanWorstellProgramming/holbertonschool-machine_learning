@@ -55,7 +55,7 @@ class DeepNeuralNetwork:
         """Sigmoid Helper"""
         return 1 / (1 + np.exp(-X))
 
-    def softmax(Z):
+    def softmax(self, Z):
         """Softmax activation function"""
         exps = np.exp(Z - np.max(Z))
         return exps / np.sum(exps, axis=0)
