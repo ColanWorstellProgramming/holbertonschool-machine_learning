@@ -37,21 +37,26 @@ class DeepNeuralNetwork:
             self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
 
     def forward_prop(self, X):
-        """Forward Propagation"""
+        """Forward Propogation"""
+
         self.__cache['A0'] = X
+
         for i in range(1, self.__L + 1):
-            Zi = np.dot(self.__weights['W' + str(i)],
-                        self.__cache['A' + str(i - 1)]) +\
-                        self.__weights['b' + str(i)]
+            B = self.__weights['b' + str(i)]
+            A = self.__cache['A' + str(i - 1)]
+            Z = np.dot(self.__weights['W' + str(i)], A) + B
             if i == self.__L:
-                # softmax activation for output layer
-                self.__cache['A' + str(i)] = self.softmax(Zi)
+                self.__cache['A' + str(i)] = self.softmax(Z)
             else:
-                if self.__activation == 'sig':
-                    self.__cache['A' + str(i)] = self.sigmoid(Zi)
-                elif self.__activation == 'tanh':
-                    self.__cache['A' + str(i)] = np.tanh(Zi)
-        return self.__cache['A' + str(self.__L)], self.__cache
+                if self.__activation == "sig":
+                    self.__cache['A' + str(i)] = self.sigmoid(Z)
+                elif self.__activation == "tanh":
+                    self.__cache['A' + str(i)] = np.tanh(Z)
+
+        for key, value in self.__cache.items():
+            self.__cache[key] = np.round(value, 10)
+
+        return self.__cache["A{}".format(self.__L)], self.__cache
 
     def sigmoid(self, X):
         """Sigmoid Helper"""
@@ -68,7 +73,6 @@ class DeepNeuralNetwork:
         m = Y.shape[1]
 
         cost = (-1 / m) * np.sum(Y * np.log(A))
-        cost = np.round(cost, 10)
         return cost
 
     def evaluate(self, X, Y):
