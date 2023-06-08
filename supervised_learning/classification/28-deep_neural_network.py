@@ -27,14 +27,10 @@ class DeepNeuralNetwork:
         self.__activation = activation
 
         for i in range(self.__L):
-            if i == 0:
-                j = np.random.randn(layers[i], nx) * np.sqrt(2 / nx)
-                self.__weights['W' + str(i + 1)] = j
-            else:
-                jjj = np.sqrt(2 / layers[i-1])
-                jj = np.random.randn(layers[i], layers[i-1]) * jjj
-                self.__weights['W' + str(i + 1)] = jj
-            self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
+            self.__weights['W' + str(i+1)] = np.random.randn(
+                layers[i], nx) * np.sqrt(2/nx)
+            self.__weights['b' + str(i+1)] = np.zeros((layers[i], 1))
+            nx = layers[i]
 
     def forward_prop(self, X):
         """Forward Propogation"""
@@ -73,6 +69,7 @@ class DeepNeuralNetwork:
         m = Y.shape[1]
 
         cost = (-1 / m) * np.sum(Y * np.log(A))
+        cost = np.round(cost, 10)
         return cost
 
     def evaluate(self, X, Y):
