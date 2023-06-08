@@ -88,7 +88,7 @@ class DeepNeuralNetwork:
                 dz = A - Y
             else:
                 if self.__activation == 'sig':
-                    dz = da * self.sigmoid(A)
+                    dz = da * self.sigmoid_derivative(A)
                 elif self.__activation == 'tanh':
                     dz = da * (1 - A**2)
             dw = np.dot(dz, A_prev.T) / m
@@ -153,13 +153,15 @@ class DeepNeuralNetwork:
     def load(filename):
         "load a file"
         try:
-            if not filename.endswith('.pkl'):
-                filename += '.pkl'
-
             with open(filename, 'rb') as file:
                 return pickle.load(file)
-        except Exception:
+        except FileNotFoundError:
             return None
+
+    @staticmethod
+    def sigmoid_derivative(A):
+        """Sigmoid Derivative"""
+        return A * (1 - A)
 
     @property
     def L(self):
