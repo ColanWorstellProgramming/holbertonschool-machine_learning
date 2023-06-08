@@ -53,9 +53,6 @@ class DeepNeuralNetwork:
                 elif self.__activation == "tanh":
                     self.__cache['A' + str(i)] = np.tanh(Z)
 
-        for key, value in self.__cache.items():
-            self.__cache[key] = np.round(value, 10)
-
         return self.__cache["A{}".format(self.__L)], self.__cache
 
     def sigmoid(self, X):
