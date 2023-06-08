@@ -70,28 +70,12 @@ class DeepNeuralNetwork:
         return cost
 
     def evaluate(self, X, Y):
-        """
-        Evaluates the neural network's predictions
-        X: a numpy.ndarray with shape (nx, m) that contains the input data
-        Y: a numpy.ndarray with shape (1, m)
-            that contains the correct labels of the input data
-        Returns the neuron's prediction and the cost of the network
-        """
-        # Compute the forward propagation and get the final activation value
-        final_activation = self.forward_prop(X)[0]
-        # Get the indices of the maximum activation value for each example
-        max_activation_indices = np.argmax(self.cache["A3"], axis=0)
-        max_activation_indices.reshape(max_activation_indices.size, 1)
-        # Create an array of indices for each example
-        example_indices = np.arange(final_activation.shape[1])
-        example_indices.reshape(example_indices.size, 1)
-        # Create a matrix of zeros with the same shape as the final activation
-        hard_max = np.zeros_like(final_activation)
-        # Set the maximum activation value for each example to 1
-        hard_max[max_activation_indices, example_indices] = 1
-        # Return the predictions (as a binary matrix) and the cost
-        return (hard_max.astype(int),
-                self.cost(Y, self.cache["A{}".format(self.L)]))
+        """Evaluate Func"""
+
+        A, _ = self.forward_prop(X)
+        predictions = np.where(A == np.amax(A, axis=0), 1, 0)
+
+        return predictions, self.cost(Y, A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Gradient Descent"""
