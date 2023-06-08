@@ -42,7 +42,7 @@ class DeepNeuralNetwork:
             A = self.__cache['A' + str(i - 1)]
             Z = np.matmul(self.__weights['W' + str(i)], A) + B
             if i == self.__L:
-                t = np.exp(z)
+                t = np.exp(Z)
                 self.__cache['A' + str(i)] = t/np.sum(t, axis=0)
             else:
                 if self.__activation == "sig":
