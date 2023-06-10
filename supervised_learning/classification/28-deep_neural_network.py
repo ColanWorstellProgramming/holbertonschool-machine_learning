@@ -27,14 +27,10 @@ class DeepNeuralNetwork:
         self.__activation = activation
 
         for i in range(self.__L):
-            if i == 0:
-                j = np.random.randn(layers[i], nx) * np.sqrt(2 / nx)
-                self.__weights['W' + str(i + 1)] = j
-            else:
-                jjj = np.sqrt(2 / layers[i-1])
-                jj = np.random.randn(layers[i], layers[i-1]) * jjj
-                self.__weights['W' + str(i + 1)] = jj
-            self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
+            self.__weights['W' + str(i+1)] = np.random.randn(
+                layers[i], nx) * np.sqrt(2/nx)
+            self.__weights['b' + str(i+1)] = np.zeros((layers[i], 1))
+            nx = layers[i]
 
     def forward_prop(self, X):
         """Forward Propogation"""
@@ -44,17 +40,15 @@ class DeepNeuralNetwork:
         for i in range(1, self.__L + 1):
             B = self.__weights['b' + str(i)]
             A = self.__cache['A' + str(i - 1)]
-            Z = np.dot(self.__weights['W' + str(i)], A) + B
+            Z = np.matmul(self.__weights['W' + str(i)], A) + B
             if i == self.__L:
-                self.__cache['A' + str(i)] = self.softmax(Z)
+                t = np.exp(Z)
+                self.__cache['A' + str(i)] = t/np.sum(t, axis=0)
             else:
                 if self.__activation == "sig":
                     self.__cache['A' + str(i)] = self.sigmoid(Z)
                 elif self.__activation == "tanh":
                     self.__cache['A' + str(i)] = np.tanh(Z)
-
-        for key, value in self.__cache.items():
-            self.__cache[key] = np.round(value, 10)
 
         return self.__cache["A{}".format(self.__L)], self.__cache
 
@@ -94,7 +88,7 @@ class DeepNeuralNetwork:
                 dz = A - Y
             else:
                 if self.__activation == 'sig':
-                    dz = da * self.sigmoid(A)
+                    dz = da * self.sigmoid_derivative(A)
                 elif self.__activation == 'tanh':
                     dz = da * (1 - A**2)
             dw = np.dot(dz, A_prev.T) / m
@@ -159,13 +153,15 @@ class DeepNeuralNetwork:
     def load(filename):
         "load a file"
         try:
-            if not filename.endswith('.pkl'):
-                filename += '.pkl'
-
             with open(filename, 'rb') as file:
                 return pickle.load(file)
-        except Exception:
+        except FileNotFoundError:
             return None
+
+    @staticmethod
+    def sigmoid_derivative(A):
+        """Sigmoid Derivative"""
+        return A * (1 - A)
 
     @property
     def L(self):
