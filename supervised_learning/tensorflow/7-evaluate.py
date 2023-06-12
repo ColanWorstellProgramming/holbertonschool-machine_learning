@@ -4,7 +4,7 @@ import tensorflow as tf
 
 
 def evaluate(X, Y, save_path):
-"""Evaluate Data"""
+    """Evaluate Data"""
 
     sess = tf.Session()
     saved = tf.train.import_meta_graph(save_path + '.meta')
