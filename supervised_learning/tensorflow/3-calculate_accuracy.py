@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Calculate Accuracy"""
 import tensorflow as tf
-create_layer = __import__('1-create_layer').create_layer
 
 
 def calculate_accuracy(y, y_pred):
     """Calculate Accuracy"""
-    for n in range(len(layer_sizes)):
-        x = create_layer(x, layer_sizes[n], activations[n])
-
-    return x
+    y_max = tf.math.argmax(y, axis=1)
+    y_pred_max = tf.math.argmax(y_pred, axis=1)
+    equality = tf.math.equal(y_max, y_pred_max)
+    accuracy = tf.math.reduce_mean(tf.cast(equality, tf.float32))
+    return accuracy
