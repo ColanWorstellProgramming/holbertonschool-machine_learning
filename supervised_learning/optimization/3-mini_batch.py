@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Imports"""
 import tensorflow as tf
+
+
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
@@ -24,15 +26,11 @@ def train_mini_batch(X_train, Y_train, X_valid,
         train_op = graph.get_operation_by_name('train_op')
 
         m_train = X_train.shape[0]
-        num_batches = int(np.ceil(m_train / batch_size))
+
+        while num_batches % batch_size != 0:
+            num_batches += 1
 
         for i in range(epochs + 1):
-
-            X_train, Y_train = shuffle_data(X_train, Y_train)
-
-            total_cost = 0.0
-            total_accuracy = 0.0
-
             train_cost, train_accuracy = sesh.run(
                 [loss, accuracy], feed_dict={x: X_train, y: Y_train})
             valid_cost, valid_accuracy = sesh.run(
@@ -45,39 +43,25 @@ def train_mini_batch(X_train, Y_train, X_valid,
             print("\tValidation Accuracy: {}".format(valid_accuracy))
 
             if i < epochs:
+                X_Shuffled, Y_Shuffled = shuffle_data(X_train, Y_train)
+
                 for j in range(num_batches):
-                    start_ind = j * batch_size
-                    end_ind = min((j + 1) * batch_size, m_train)
-                    X_batch = X_train[start_ind:end_ind]
-                    Y_batch = Y_train[start_ind:end_ind]
+                    batch_dict = {x: X_Shuffled[batch_size
+                                                     * j:batch_size
+                                                     * (j + 1)],
+                                       y: Y_Shuffled[batch_size
+                                                     * j:batch_size
+                                                     * (j + 1)]}
+                    sesh.run((train_op), feed_dict=batch_dict)
 
-                    _, batch_cost, batch_accuracy = sesh.run(
-                        [train_op, loss, accuracy],
-                        feed_dict={x: X_batch, y: Y_batch}
-                    )
+                    if (j + 1) % 100 == 0 and j != 0:
 
-                    total_cost += batch_cost
-                    total_accuracy += batch_accuracy
-
-                    if (j + 1) % 100 == 0:
+                        batch_cost = loss.eval(batch_dict)
+                        batch_accuracy = accuracy.eval(batch_dict)
                         print("\tStep {}:".format(j + 1))
                         print("\t\tCost: {}".format(batch_cost))
                         print("\t\tAccuracy: {}".format(batch_accuracy))
 
-                avg_cost = total_cost / num_batches
-                avg_accuracy = total_accuracy / num_batches
-
-                valid_cost, valid_accuracy = sesh.run(
-                    [loss, accuracy],
-                    feed_dict={x: X_valid, y: Y_valid}
-                )
-
-                print("\tTraining Cost: {}".format(avg_cost))
-                print("\tTraining Accuracy: {}".format(avg_accuracy))
-                print("\tValidation Cost: {}".format(valid_cost))
-                print("\tValidation Accuracy: {}".format(valid_accuracy))
-
         save_path = saver.save(sesh, save_path)
-        print("Model saved in path: {}".format(save_path))
 
     return save_path
