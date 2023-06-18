@@ -25,7 +25,7 @@ def train_mini_batch(X_train, Y_train, X_valid,
         loss = graph.get_tensor_by_name('loss:0')
         train_op = graph.get_operation_by_name('train_op')
 
-        m_train = X_train.shape[0]
+        num_batches = len(X_train)//batch_size
 
         while num_batches % batch_size != 0:
             num_batches += 1
