@@ -66,7 +66,7 @@ def train_mini_batch(X_train, Y_train, X_valid,
             print("\tValidation Cost: {}".format(valid_cost))
             print("\tValidation Accuracy: {}".format(valid_accuracy))
 
-        save_path = saver.save(sesh, save_path)
+        save_path = saver.restore(sesh, save_path)
         print("Model saved in path: {}".format(save_path))
 
     return save_path
