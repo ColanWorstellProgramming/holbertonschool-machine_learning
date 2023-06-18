@@ -9,9 +9,9 @@ def train_mini_batch(X_train, Y_train, X_valid,
                      load_path="/tmp/model.ckpt",
                      save_path="/tmp/model.ckpt"):
     """Its Trainin Time"""
-    saver = tf.train.import_meta_graph(load_path + '.meta')
 
     with tf.Session() as sesh:
+        saver = tf.train.import_meta_graph(load_path + '.meta')
         saver.restore(sesh, load_path)
 
         graph = tf.get_default_graph()
