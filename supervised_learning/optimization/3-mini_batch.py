@@ -45,12 +45,10 @@ def train_mini_batch(X_train, Y_train, X_valid,
                 X_Shuffled, Y_Shuffled = shuffle_data(X_train, Y_train)
 
                 for j in range(num_batches):
-                    batch_dict = {x: X_Shuffled[batch_size
-                                                     * j:batch_size
-                                                     * (j + 1)],
-                                       y: Y_Shuffled[batch_size
-                                                     * j:batch_size
-                                                     * (j + 1)]}
+                    batch_dict = {
+                        x: X_Shuffled[batch_size * j: batch_size * (j + 1)],
+                        y: Y_Shuffled[batch_size * j: batch_size * (j + 1)]
+                    }
                     sesh.run((train_op), feed_dict=batch_dict)
 
                     if (j + 1) % 100 == 0 and j != 0:
