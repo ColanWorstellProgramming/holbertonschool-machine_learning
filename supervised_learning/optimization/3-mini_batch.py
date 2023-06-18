@@ -30,6 +30,9 @@ def train_mini_batch(X_train, Y_train, X_valid,
 
             X_train, Y_train = shuffle_data(X_train, Y_train)
 
+            total_cost = 0.0
+            total_accuracy = 0.0
+
             train_cost, train_accuracy = sesh.run(
                 [loss, accuracy], feed_dict={x: X_train, y: Y_train})
             valid_cost, valid_accuracy = sesh.run(
