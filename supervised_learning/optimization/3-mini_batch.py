@@ -30,9 +30,9 @@ def train_mini_batch(X_train, Y_train, X_valid,
 
             X_train, Y_train = shuffle_data(X_train, Y_train)
 
-            train_cost, train_accuracy = sess.run(
+            train_cost, train_accuracy = sesh.run(
                 [loss, accuracy], feed_dict={x: X_train, y: Y_train})
-            valid_cost, valid_accuracy = sess.run(
+            valid_cost, valid_accuracy = sesh.run(
                 [loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
 
             print("After {} epochs:".format(i))
