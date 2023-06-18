@@ -12,7 +12,7 @@ def train_mini_batch(X_train, Y_train, X_valid,
     saver = tf.train.import_meta_graph(load_path + '.meta')
 
     with tf.Session() as sesh:
-        save.restore(sesh, load_path)
+        saver.restore(sesh, load_path)
 
         graph = tf.get_default_graph()
 
@@ -66,7 +66,7 @@ def train_mini_batch(X_train, Y_train, X_valid,
             print("\tValidation Cost: {}".format(valid_cost))
             print("\tValidation Accuracy: {}".format(valid_accuracy))
 
-        save_path = saver.restore(sesh, save_path)
+        save_path = saver.save(sesh, save_path)
         print("Model saved in path: {}".format(save_path))
 
     return save_path
