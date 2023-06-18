@@ -5,4 +5,4 @@ import numpy as np
 
 def normalize(X, m, s):
     """Normilization"""
-    return X - m / s
+    return (X - m) / s
