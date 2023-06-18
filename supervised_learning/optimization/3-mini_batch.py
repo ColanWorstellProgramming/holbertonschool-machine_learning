@@ -18,12 +18,11 @@ def train_mini_batch(X_train, Y_train, X_valid,
 
         graph = tf.get_default_graph()
 
-        x = graph.get_tensor_by_name('x:0')
-        y = graph.get_tensor_by_name('y:0')
-
-        accuracy = graph.get_tensor_by_name('accuracy:0')
-        loss = graph.get_tensor_by_name('loss:0')
-        train_op = graph.get_operation_by_name('train_op')
+        x = graph.get_collection("x")[0]
+        y = graph.get_collection("y")[0]
+        accuracy = graph.get_collection("accuracy")[0]
+        loss = graph.get_collection("loss")[0]
+        train_op = graph.get_collection("train_op")
 
         num_batches = len(X_train)//batch_size
 
