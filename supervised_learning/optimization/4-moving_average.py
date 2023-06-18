@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Imports"""
-import tensorflow as tf
+import numpy as np
 
 
 def moving_average(data, beta):
