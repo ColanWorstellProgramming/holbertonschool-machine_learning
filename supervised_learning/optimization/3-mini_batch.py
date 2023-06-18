@@ -40,7 +40,10 @@ def train_mini_batch(X_train, Y_train, X_valid,
                 X_batch = X_train[start_ind:end_ind]
                 Y_batch = Y_train[start_ind:end_ind]
 
-                _, batch_cost, batch_accuracy = sesh.run([train_op, loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
+                _, batch_cost, batch_accuracy = sesh.run(
+                    [train_op, loss, accuracy],
+                    feed_dict={x: X_batch, y: Y_batch}
+                )
 
                 total_cost += batch_cost
                 total_accuracy += batch_accuracy
@@ -53,7 +56,10 @@ def train_mini_batch(X_train, Y_train, X_valid,
             avg_cost = total_cost / num_batches
             avg_accuracy = total_accuracy / num_batches
 
-            valid_cost, valid_accuracy = sesh.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
+            valid_cost, valid_accuracy = sesh.run(
+                [loss, accuracy],
+                feed_dict={x: X_valid, y: Y_valid}
+            )
 
             print("\tTraining Cost: {}".format(avg_cost))
             print("\tTraining Accuracy: {}".format(avg_accuracy))
@@ -64,4 +70,3 @@ def train_mini_batch(X_train, Y_train, X_valid,
         print("Model saved in path: {}".format(save_path))
 
     return save_path
-
