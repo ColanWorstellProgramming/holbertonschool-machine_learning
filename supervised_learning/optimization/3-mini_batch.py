@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Imports"""
 import tensorflow as tf
-shuffle = __import__('2-shuffle_data').shuffle_data
+shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
 def train_mini_batch(X_train, Y_train, X_valid,
@@ -29,7 +29,7 @@ def train_mini_batch(X_train, Y_train, X_valid,
         for i in range(epochs + 1):
             print("After {} epochs:".format(i))
 
-            X_train, Y_train = shuffle(X_train, Y_train)
+            X_train, Y_train = shuffle_data(X_train, Y_train)
 
             total_cost = 0.0
             total_accuracy = 0.0
