@@ -9,7 +9,7 @@ def create_batch_norm_layer(prev, n, activation):
     den_lay = tf.layers.Dense(inputs=prev, units=n, kernel_initializer=cont)
 
     z = dense(prev)
-    mean, var = tf.nn.moments(z, axes=[0])
+    mean, var = tf.nn.moments(den_lay,0)
 
     gamma = tf.Variable(tf.ones([n]))
     beta = tf.Variable(tf.zeros([n]))
