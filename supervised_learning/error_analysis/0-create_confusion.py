@@ -8,7 +8,7 @@ def create_confusion_matrix(labels, logits):
     l1 = labels.shape[1]
     l2 = logits.shape[1]
 
-    matrix = np.zeros  ((l1, l2))
+    matrix = np.zeros((l1, l2))
 
     prediction = np.argmax(logits, axis=1)
 
