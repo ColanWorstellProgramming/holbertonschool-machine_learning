@@ -4,7 +4,13 @@ import numpy as np
 
 
 def create_confusion_matrix(labels, logits):
-    """Error Matrix"""
+    """
+    A confusion matrix is a table that represents
+    the performance of a classification model by
+    comparing its predicted labels against the actual
+    labels of a dataset.
+    """
+
     l1 = labels.shape[1]
     l2 = logits.shape[1]
 
