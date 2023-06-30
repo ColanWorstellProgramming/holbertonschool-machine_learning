@@ -23,7 +23,7 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
         if layer == L:
             dZ = A - Y
         else:
-            dZ = A_prev * (1 - np.power(A, 2))
+            dZ = A_prev * (1 - np.square(A))
 
         W = weights['W{}'.format(layer)]
 
