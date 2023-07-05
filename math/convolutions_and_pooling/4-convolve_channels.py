@@ -40,7 +40,8 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
 
     for i in range(oh):
         for j in range(ow):
-            CONVO[:, i, j] = np.sum(images[:,i*sh:i*sh+kh,
-                                           j*sw:j*sw+kw] * kernel, axis=(1, 2, 3))
+            CONVO[:, i, j] = np.sum(images[:, i * sh:i * sh + kh,
+                                           j * sw:j * sw + kw] *
+                                           kernel, axis=(1, 2, 3))
 
     return CONVO
