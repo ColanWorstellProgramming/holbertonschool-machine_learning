@@ -24,7 +24,6 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
     kh, kw, _, nc = kernels.shape
     sh, sw = stride
 
-
     if padding == 'same':
         ph = max((h - 1) * sh + kh - h, 0)
         pw = max((w - 1) * sw + kw - w, 0)
@@ -46,6 +45,6 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
             for k in range(nc):
                 img = images[:, i*sh:i*sh+kh, j*sw:j*sw+kw, :]
                 K = kernels[:, :, :, k]
-                images[:, i, j, k] = np.sum(img * K, axis=(1, 2, 3))
+                CONVO[:, i, j, k] = np.sum(img * K, axis=(1, 2, 3))
 
     return CONVO
