@@ -20,13 +20,13 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
     number of channels.
     """
 
-    m, h, w, c = images.shape
+    m, h, w, _ = images.shape
     kh, kw, _, nc = kernels.shape
     sh, sw = stride
 
     if padding == 'same':
-        ph = max((h - 1) * sh + kh - h, 0)
-        pw = max((w - 1) * sw + kw - w, 0)
+        ph = (((h - 1) * sh) + kh - h) // 2 + 1
+        pw = (((w - 1) * sw) + kw - w) // 2 + 1
     elif padding == 'valid':
         ph, pw = 0, 0
     else:
