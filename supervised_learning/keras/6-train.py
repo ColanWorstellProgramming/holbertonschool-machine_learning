@@ -12,7 +12,7 @@ def train_model(network, data, labels, batch_size,
 
     This time we are checking for early stopping
     """
-    if validation_data is True and early_stopping is True:
+    if validation_data and early_stopping:
         EARLY = K.callbacks.EarlyStopping(monitor='val_loss', mode='min',
                                              patience=patience)
         return network.fit(x=data,
