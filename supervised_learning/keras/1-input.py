@@ -20,12 +20,12 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
             save = (K.layers.Dense(layers[i],
                     activation=activations[i],
                     kernel_regularizer=K.regularizers.l2(lambtha)
-                    ))(model)
+                                  ))(model)
         else:
             save = (K.layers.Dense(layers[i],
                     activation=activations[i],
                     kernel_regularizer=K.regularizers.l2(lambtha)
-                    ))(save)
+                                  ))(save)
         if i < len(layers) - 1:
             save = (K.layers.Dropout(1 - keep_prob)(save))
 
