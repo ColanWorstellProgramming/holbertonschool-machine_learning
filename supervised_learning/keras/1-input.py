@@ -13,12 +13,13 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     """
 
     model = K.Input(shape=(nx,))
+    save = model
 
     for i in range(1, len(layers)):
-        model.add(K.layers.Dropout(1 - keep_prob))
-        model.add(K.layers.Dense(layers[i],
-                                 activation=activations[i],
-                                 kernel_regularizer=K.regularizers.l2(lambtha)
-                                 ))
+        save = (K.layers.Dense(layers[i],
+                               activation=activations[i],
+                               kernel_regularizer=K.regularizers.l2(lambtha)
+                               (save)))
+        save = (K.layers.Dropout(1 - keep_prob)(save))
 
-    return K.Model(inputs=model, outputs=x)
+    return K.Model(inputs=model, outputs=save)
