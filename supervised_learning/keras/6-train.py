@@ -14,7 +14,7 @@ def train_model(network, data, labels, batch_size,
     """
     if validation_data and early_stopping:
         EARLY = K.callbacks.EarlyStopping(monitor='val_loss', mode='min',
-                                             patience=patience)
+                                          patience=patience)
         return network.fit(x=data,
                            y=labels,
                            batch_size=batch_size,
