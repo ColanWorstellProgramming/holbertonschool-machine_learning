@@ -15,12 +15,12 @@ def train_model(network, data, labels, batch_size,
     """
     list = []
 
-    if validation_data is True and early_stopping is True:
+    if validation_data and early_stopping:
         list.append(K.callbacks.EarlyStopping(monitor='val_loss',
                                               mode='min',
                                               atience=patience))
 
-    if validation_data is True and learning_rate_decay is True:
+    if validation_data and learning_rate_decay:
         def scheduler(epoch):
             """Scheduler"""
             return (alpha / (1 + decay_rate * epoch))
