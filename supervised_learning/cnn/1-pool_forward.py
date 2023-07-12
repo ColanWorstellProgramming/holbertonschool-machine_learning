@@ -23,19 +23,20 @@ def pool_forward(A_prev, kernel_shape, stride=(1, 1), mode='max'):
     kh, kw = kernel_shape
     sh, sw = stride
 
-    h_out = (h + 2 * h - kh) // sh + 1
-    w_out = (w + 2 * w - kw) // sw + 1
+    h = (h - kh) // sh + 1
+    w = (w - kw) // sw + 1
 
-    CONVO = np.zeros((m, h_out, w_out, c))
+    CONVO = np.zeros((m, h, w, c))
 
-    for i in range(h_out):
-        for j in range(w_out):
+    for i in range(h):
+        for j in range(w):
             VER_START = i * sh
             VER_END = VER_START + kh
             horiz_start = j * sw
             horiz_end = horiz_start + kw
 
-            a_prev_slice = A_prev[:, VER_START:VER_END, horiz_start:horiz_end, :]
+            a_prev_slice = A_prev[:, VER_START:VER_END,
+                                  horiz_start:horiz_end, :]
 
             if mode == 'max':
                 CONVO[:, i, j, :] = np.max(a_prev_slice, axis=(1, 2))
