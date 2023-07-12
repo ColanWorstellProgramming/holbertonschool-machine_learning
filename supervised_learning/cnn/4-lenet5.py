@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Imports"""
-import numpy as np
+import tensorflow as tf
 
 
 def lenet5(x, y):
