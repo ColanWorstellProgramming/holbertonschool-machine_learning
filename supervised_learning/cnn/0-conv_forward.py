@@ -24,8 +24,8 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     sh, sw = stride
 
     if padding == 'same':
-        ph = (((h - 1) * sh) + kh - h) // 2 + 1
-        pw = (((w - 1) * sw) + kw - w) // 2 + 1
+        ph = (((h - 1) * sh) + kh - h) // 2
+        pw = (((w - 1) * sw) + kw - w) // 2 
     elif padding == 'valid':
         ph, pw = 0, 0
     else:
@@ -41,8 +41,12 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     for i in range(h_out):
         for j in range(w_out):
             for k in range(c):
-                a_slice_prev = A_prev[:, i * sh:i * sh + kh, j * sw:j * sw + kw, :]
-                CONVO[:, i, j, k] = np.sum(a_slice_prev * W[:, :, :, k], axis=(1, 2, 3))
+                a_slice_prev = A_prev[:, i * sh:i *
+                                      sh + kh, j *
+                                      sw:j * sw + kw, :]
+                CONVO[:, i, j, k] = np.sum(a_slice_prev *
+                                           W[:, :, :, k],
+                                           axis=(1, 2, 3))
 
     CONVO = CONVO + b
 
