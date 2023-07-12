@@ -25,7 +25,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
 
     if padding == 'same':
         ph = (((h - 1) * sh) + kh - h) // 2
-        pw = (((w - 1) * sw) + kw - w) // 2 
+        pw = (((w - 1) * sw) + kw - w) // 2
     elif padding == 'valid':
         ph, pw = 0, 0
     else:
