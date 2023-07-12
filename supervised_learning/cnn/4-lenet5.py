@@ -3,8 +3,6 @@
 import numpy as np
 
 
-import tensorflow as tf
-
 def lenet5(x, y):
     """
     The lenet5 function takes x and y as input, which are
