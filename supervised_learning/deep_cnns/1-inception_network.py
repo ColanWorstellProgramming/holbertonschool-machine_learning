@@ -9,11 +9,13 @@ def inception_network():
     Building an Inception Network
     """
     inputs = K.Input(shape=(224, 224, 3))
+    he_normal = K.initializers.he_normal()
 
     x = K.layers.Conv2D(64, (7, 7),
                         strides=(2, 2),
                         padding='same',
-                        activation='relu')(inputs)
+                        activation='relu',
+                        kernel_initializer=he_normal)(inputs)
 
     x = K.layers.MaxPooling2D((3, 3),
                               strides=(2, 2),
@@ -22,12 +24,14 @@ def inception_network():
     x = K.layers.Conv2D(64,
                         (1, 1),
                         padding='same',
-                        activation='relu')(x)
+                        activation='relu',
+                        kernel_initializer=he_normal)(x)
 
     x = K.layers.Conv2D(192,
                         (3, 3),
                         padding='same',
-                        activation='relu')(x)
+                        activation='relu',
+                        kernel_initializer=he_normal)(x)
 
     x = K.layers.MaxPooling2D((3, 3),
                               strides=(2, 2),
@@ -58,7 +62,9 @@ def inception_network():
                                   padding='valid')(x)
 
     x = K.layers.Dropout(0.4)(x)
-    x = K.layers.Dense(1000, activation='softmax')(x)
+    x = K.layers.Dense(1000,
+                       activation='softmax',
+                       kernel_initializer=he_normal)(x)
 
     model = K.Model(inputs, x)
 
