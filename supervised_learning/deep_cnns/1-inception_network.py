@@ -52,7 +52,7 @@ def inception_network():
     x = inception_block(x, [384, 192, 384, 48, 128, 128])
 
     x = K.layers.AveragePooling2D(pool_size=(7, 7),
-                                  strides=1,
+                                  strides=(7, 7),
                                   padding='valid')(x)
 
     x = K.layers.Dropout(0.4)(x)
