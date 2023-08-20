@@ -29,49 +29,62 @@ class Yolo:
         """
         Filter Boxes
         """
-        
+        filtered_boxes = []
+        box_classes = []
+        box_scores = []
+
+        for box, confidences, class_probs in zip(boxes, box_confidences, box_class_probs):
+            confidences_reshaped = confidences.reshape(*class_probs.shape[:-1], 1)
+            scores = confidences_reshaped * class_probs
+            class_indices = class_probs.argmax(axis=3)
+
+            high_score_indices = scores >= self.class_t
+
+            filtered_boxes.extend(box[high_score_indices])
+            box_classes.extend(class_indices[high_score_indices])
+            box_scores.extend(scores[high_score_indices])
+
+        filtered_boxes = np.array(filtered_boxes)
+        box_classes = np.array(box_classes)
+        box_scores = np.array(box_scores)
+
+        return filtered_boxes, box_classes, box_scores
 
     def process_outputs(self, outputs, image_size):
         """
         Process Outputs
         """
         boxes, box_confidences, box_class_probs = [], [], []
+        image_height, image_width = image_size
 
-        img_height, img_width = image_size
+        for output in range(len(outputs)):
+            boxes.append(outputs[output][..., :4])
+            box_confidences.append(self.sigmoid(outputs[output][..., 4:5]))
+            box_class_probs.append(self.sigmoid(outputs[output][..., 5:]))
 
-        for output, anchors in zip(outputs, self.anchors):
-            grid_height, grid_width, _, _ = output.shape
+        for output in range(len(boxes)):
+            grid_height = outputs[output].shape[0]
+            grid_width = outputs[output].shape[1]
+            anchors = outputs[output].shape[2]
 
-            t_xy = output[..., :2]
-            t_wh = output[..., 2:4]
-            box_confidence = output[..., 4:5]
-            box_class_prob = output[..., 5:]
-
-            sigmoid_t_xy = self.sigmoid(t_xy)
-            sigmoid_t_wh = np.exp(t_wh)
-
-            grid_x = np.arange(grid_width)
-            grid_y = np.arange(grid_height)
-            grid_x, grid_y = np.meshgrid(grid_x, grid_y)
-
-            grid_x = np.expand_dims(grid_x, axis=-1)
-            grid_y = np.expand_dims(grid_y, axis=-1)
-
-            b_x = (sigmoid_t_xy[..., 0] + grid_x) / grid_width
-            b_y = (sigmoid_t_xy[..., 1] + grid_y) / grid_height
-            b_w = (anchors[:, 0] * sigmoid_t_wh[..., 0]) / img_width
-            b_h = (anchors[:, 1] * sigmoid_t_wh[..., 1]) / img_height
-
-            x1 = (b_x - b_w / 2) * img_width
-            y1 = (b_y - b_h / 2) * img_height
-            x2 = x1 + b_w * img_width
-            y2 = y1 + b_h * img_height
-
-            sigmoid_class_probs = self.sigmoid(box_class_prob)
-
-            boxes.append(np.stack((x1, y1, x2, y2), axis=-1))
-            box_confidences.append(box_confidence)
-            box_class_probs.append(sigmoid_class_probs)
+            for cy in range(grid_height):
+                for cx in range(grid_width):
+                    for b in range(anchors):
+                        tx, ty, tw, th = boxes[output][cy, cx, b]
+                        pw, ph = self.anchors[output][b]
+                        bx = (self.sigmoid(tx)) + cx
+                        by = (self.sigmoid(ty)) + cy
+                        bw = pw * np.exp(tw)
+                        bh = ph * np.exp(th)
+                        bx /= grid_width
+                        by /= grid_height
+                        bw /= self.model.input.shape[1]
+                        bh /= self.model.input.shape[2]
+                        x1 = (bx - (bw / 2)) * image_width
+                        y1 = (by - (bh / 2)) * image_height
+                        x2 = (bx + (bw / 2)) * image_width
+                        y2 = (by + (bh / 2)) * image_height
+                        boxes[output][cy, cx, b] = [x1, y1, x2, y2]
 
         return boxes, box_confidences, box_class_probs
 
