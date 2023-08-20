@@ -61,7 +61,7 @@ class Yolo:
                         y2 = (by + (bh / 2)) * image_height
                         boxes[output][cy, cx, b] = [x1, y1, x2, y2]
 
-        return (boxes, box_confidences, box_class_probs)
+        return boxes, box_confidences, box_class_probs
 
     def sigmoid(self, x):
         """
