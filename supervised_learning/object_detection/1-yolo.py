@@ -33,7 +33,6 @@ class Yolo:
         image_height, image_width = image_size
 
         for output in range(len(outputs)):
-
             boxes.append(outputs[output][..., :4])
             box_confidences.append(self.sigmoid(outputs[output][..., 4:5]))
             box_class_probs.append(self.sigmoid(outputs[output][..., 5:]))
