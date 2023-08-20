@@ -33,16 +33,20 @@ class Yolo:
         box_classes = []
         box_scores = []
 
-        for box, confidences, class_probs in zip(boxes, box_confidences, box_class_probs):
-            confidences_reshaped = confidences.reshape(*class_probs.shape[:-1], 1)
-            scores = confidences_reshaped * class_probs
-            class_indices = class_probs.argmax(axis=3)
+        for i in range(len(boxes)):
+            box = boxes[i]
+            box_confidence = box_confidences[i]
+            box_class_prob = box_class_probs[i]
 
-            high_score_indices = scores >= self.class_t
+            box_scores_per_class = box_confidence * box_class_prob
+            box_class_index = np.argmax(box_scores_per_class, axis=-1)
+            box_class_score = np.max(box_scores_per_class, axis=-1)
 
-            filtered_boxes.extend(box[high_score_indices])
-            box_classes.extend(class_indices[high_score_indices])
-            box_scores.extend(scores[high_score_indices])
+            mask = box_class_score >= self.class_t
+
+            filtered_boxes.extend(box[mask])
+            box_classes.extend(box_class_index[mask])
+            box_scores.extend(box_class_score[mask])
 
         filtered_boxes = np.array(filtered_boxes)
         box_classes = np.array(box_classes)
