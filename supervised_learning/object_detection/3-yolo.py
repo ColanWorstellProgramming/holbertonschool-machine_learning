@@ -25,6 +25,59 @@ class Yolo:
         self.nms_t = nms_t
         self.anchors = anchors
 
+    def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
+        """
+        Non-Max Suppression
+        """
+        selected_boxes = []
+        selected_classes = []
+        selected_scores = []
+
+        for c in set(box_classes):
+            i = np.where(box_classes == c)
+            cls_boxes = filtered_boxes[i]
+            cls_box_scores = box_scores[i]
+
+            while len(cls_boxes) > 0:
+                max_idx = np.argmax(cls_box_scores)
+                selected_boxes.append(cls_boxes[max_idx])
+                selected_classes.append(c)
+                selected_scores.append(cls_box_scores[max_idx])
+
+                cls_boxes = np.delete(cls_boxes, max_idx, axis=0)
+                cls_box_scores = np.delete(cls_box_scores, max_idx, axis=0)
+
+                if len(cls_boxes) == 0:
+                    break
+
+                iou = self.calculate_iou(selected_boxes[-1], cls_boxes)
+                mask = iou < self.nms_t
+
+                cls_boxes = cls_boxes[mask]
+                cls_box_scores = cls_box_scores[mask]
+
+        selected_boxes = np.array(selected_boxes)
+        selected_classes = np.array(selected_classes)
+        selected_scores = np.array(selected_scores)
+
+        return selected_boxes, selected_classes, selected_scores
+
+    def calculate_iou(self, box, boxes):
+        """
+        Intersection over union
+        """
+        x1 = np.maximum(box[0], boxes[:, 0])
+        y1 = np.maximum(box[1], boxes[:, 1])
+        x2 = np.minimum(box[2], boxes[:, 2])
+        y2 = np.minimum(box[3], boxes[:, 3])
+
+        intersect = np.maximum(0, x2 - x1) * np.maximum(0, y2 - y1)
+
+        area = (box[2] - box[0]) * (box[3] - box[1])
+        boxes_area = (boxes[:, 2] - boxes[:, 0]) * (boxes[:, 3] - boxes[:, 1])
+
+        return intersect / (area + boxes_area - intersect)
+
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
         """
         Filter Boxes
@@ -82,8 +135,8 @@ class Yolo:
                         bh = ph * np.exp(th)
                         bx /= grid_width
                         by /= grid_height
-                        bw /= self.model.input.shape[1].value
-                        bh /= self.model.input.shape[2].value
+                        bw /= self.model.input.shape[1]
+                        bh /= self.model.input.shape[2]
                         x1 = (bx - (bw / 2)) * image_width
                         y1 = (by - (bh / 2)) * image_height
                         x2 = (bx + (bw / 2)) * image_width
