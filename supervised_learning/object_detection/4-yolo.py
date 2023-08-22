@@ -40,7 +40,6 @@ class Yolo:
 
         return img, img_pth
 
-
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
         """
         Non-Max Suppression
