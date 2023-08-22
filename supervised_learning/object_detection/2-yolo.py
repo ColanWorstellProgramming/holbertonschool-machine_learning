@@ -33,24 +33,20 @@ class Yolo:
         box_classes = []
         box_scores = []
 
-        for i in range(len(boxes)):
-            box = boxes[i]
-            box_confidence = box_confidences[i]
-            box_class_prob = box_class_probs[i]
+        for box in range(len(boxes)):
+            box_classes.append(np.argmax(box_class_probs[box] * box_confidences[box], axis=-1).reshape(-1))
+            box_scores.append(np.max(box_class_probs[box] * box_confidences[box], axis=-1).reshape(-1))
 
-            box_scores_per_class = box_confidence * box_class_prob
-            box_class_index = np.argmax(box_scores_per_class, axis=-1)
-            box_class_score = np.max(box_scores_per_class, axis=-1)
+        box_classes_con = np.concatenate(box_classes)
+        box_scores_con = np.concatenate(box_scores)
+        mask = box_scores_con >= self.class_t
 
-            mask = box_class_score >= self.class_t
+        filtered_boxes = np.concatenate(
+            [box.reshape(-1, 4) for box in boxes], axis=0)
+        filtered_boxes = filtered_boxes[mask]
 
-            filtered_boxes.extend(box[mask])
-            box_classes.extend(box_class_index[mask])
-            box_scores.extend(box_class_score[mask])
-
-        filtered_boxes = np.array(filtered_boxes)
-        box_classes = np.array(box_classes)
-        box_scores = np.array(box_scores)
+        box_classes = box_classes_con[mask]
+        box_scores = box_scores_con[mask]
 
         return filtered_boxes, box_classes, box_scores
 
@@ -82,8 +78,8 @@ class Yolo:
                         bh = ph * np.exp(th)
                         bx /= grid_width
                         by /= grid_height
-                        bw /= self.model.input.shape[1]
-                        bh /= self.model.input.shape[2]
+                        bw /= self.model.input.shape[1].value
+                        bh /= self.model.input.shape[2].value
                         x1 = (bx - (bw / 2)) * image_width
                         y1 = (by - (bh / 2)) * image_height
                         x2 = (bx + (bw / 2)) * image_width
