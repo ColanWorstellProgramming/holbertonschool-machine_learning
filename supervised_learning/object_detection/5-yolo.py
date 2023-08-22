@@ -38,14 +38,14 @@ class Yolo:
         image_shapes = []
 
         for image in images:
-            orig_h, orig_w, _ = image.shape
+            orig_h, orig_w = image.shape[:2]
             image_shapes.append((orig_h, orig_w))
 
             resized_image = cv2.resize(image, (input_w, input_h),
                                        interpolation=cv2.INTER_CUBIC)
             rescaled_image = resized_image / 255
 
-            pimages.append(rescaled_image)
+            pimages.append(rescaled_image[0:2])
 
         pimages = np.array(pimages)
         image_shapes = np.array(image_shapes)
