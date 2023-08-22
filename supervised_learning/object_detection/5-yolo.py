@@ -31,21 +31,19 @@ class Yolo:
         """
         Preprocess Images
         """
-        input_h = self.model.input.shape[1]
-        input_w = self.model.input.shape[2]
 
         pimages = []
         image_shapes = []
 
         for image in images:
-            orig_h, orig_w = image.shape[:2]
-            image_shapes.append((orig_h, orig_w))
+            image_shapes.append(image.shape[:2])
 
-            resized_image = cv2.resize(image, (input_w, input_h),
-                                       interpolation=cv2.INTER_CUBIC)
-            rescaled_image = resized_image / 255
+            resized_image = cv2.resize(image,
+                                    (self.model.input.shape[1],
+                                     self.model.input.shape[2]),
+                                    interpolation=cv2.INTER_CUBIC) / 255
 
-            pimages.append(rescaled_image[0:2])
+            pimages.append(resized_image[0:2])
 
         pimages = np.asarray(pimages)
         image_shapes = np.array(image_shapes)
