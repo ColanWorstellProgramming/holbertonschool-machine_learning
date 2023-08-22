@@ -34,8 +34,12 @@ class Yolo:
         box_scores = []
 
         for box in range(len(boxes)):
-            box_classes.append(np.argmax(box_class_probs[box] * box_confidences[box], axis=-1).reshape(-1))
-            box_scores.append(np.max(box_class_probs[box] * box_confidences[box], axis=-1).reshape(-1))
+            box_classes.append(np.argmax(box_class_probs[box]
+                                         * box_confidences[box],
+                                         axis=-1).reshape(-1))
+            box_scores.append(np.max(box_class_probs[box]
+                                     * box_confidences[box],
+                                     axis=-1).reshape(-1))
 
         box_classes_con = np.concatenate(box_classes)
         box_scores_con = np.concatenate(box_scores)
