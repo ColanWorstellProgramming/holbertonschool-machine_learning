@@ -39,9 +39,9 @@ class Yolo:
             image_shapes.append(image.shape[:2])
 
             resized_image = cv2.resize(image,
-                                    (self.model.input.shape[1],
-                                     self.model.input.shape[2]),
-                                    interpolation=cv2.INTER_CUBIC) / 255
+                                       (self.model.input.shape[1],
+                                       self.model.input.shape[2]),
+                                       interpolation=cv2.INTER_CUBIC) / 255
 
             pimages.append(resized_image[0:2])
 
