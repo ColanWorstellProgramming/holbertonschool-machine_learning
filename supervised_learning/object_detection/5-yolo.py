@@ -44,7 +44,7 @@ class Yolo:
                                        interpolation=cv2.INTER_CUBIC)
             rescaled_image = resized_image / 255
 
-            pimages.append(rescaled_image[0:2])
+            pimages.append(rescaled_image)
 
         pimages = np.asarray(pimages)
         image_shapes = np.array(image_shapes)
