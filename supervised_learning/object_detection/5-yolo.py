@@ -40,10 +40,11 @@ class Yolo:
 
             resized_image = cv2.resize(image,
                                        (self.model.input.shape[1],
-                                       self.model.input.shape[2]),
-                                       interpolation=cv2.INTER_CUBIC) / 255
+                                        self.model.input.shape[2]),
+                                       interpolation=cv2.INTER_CUBIC)
+            rescaled_image = resized_image / 255
 
-            pimages.append(resized_image[0:2])
+            pimages.append(rescaled_image[0:2])
 
         pimages = np.asarray(pimages)
         image_shapes = np.array(image_shapes)
