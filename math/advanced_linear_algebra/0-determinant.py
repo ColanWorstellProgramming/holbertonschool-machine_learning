@@ -7,7 +7,7 @@ def determinant(matrix):
     Calculate Determinant
     """
 
-    if not isinstance(matrix, list) or len(matrix) == 0:
+    if not isinstance(matrix, list):
         raise TypeError("matrix must be a list of lists")
 
     if len(matrix) != len(matrix[0]):
@@ -16,7 +16,7 @@ def determinant(matrix):
     if len(matrix) == 0:
         return 1
 
-    if len(matrix) == 1 and len(matrix[0]) == 0:
+    if len(matrix) == 1:
         return matrix[0][0]
 
     if len(matrix) == 2:
