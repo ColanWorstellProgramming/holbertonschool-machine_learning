@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Imports"""
 
+
 def cofactor(matrix):
     """Co-factor from minor"""
     if not isinstance(matrix, list) or len(matrix) == 0:
