@@ -33,12 +33,13 @@ def minor(matrix):
 
     return minor_determ
 
+
 def determinant(matrix):
     """
     Calculate Determinant
     """
 
-    if not isinstance(matrix, list):
+    if not isinstance(matrix, list) or len(matrix) == 0:
         raise TypeError("matrix must be a list of lists")
 
     if len(matrix) == 1 and len(matrix[0]) == 0:
