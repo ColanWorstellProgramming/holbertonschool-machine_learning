@@ -20,7 +20,7 @@ def determinant(matrix):
         if len(matrix) != len(matrix[i]):
             raise ValueError("matrix must be a square matrix")
 
-    if len(matrix == 0):
+    if len(matrix) == 0:
         return 1
 
     if len(matrix) == 1 and len(matrix[0]) == 1:
