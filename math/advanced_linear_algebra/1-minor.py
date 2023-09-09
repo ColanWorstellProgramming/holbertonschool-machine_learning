@@ -6,22 +6,32 @@ def minor(matrix):
     """
     Find Minor From Determinant
     """
-    if not isinstance(matrix, list):
+    if not isinstance(matrix, list) or len(matrix) == 0:
         raise TypeError("matrix must be a list of lists")
 
-    if len(matrix) != len(matrix[0]):
-        raise ValueError("matrix must be a square matrix")
+    if len(matrix) == 1 and len(matrix[0]) == 0:
+        return 1
 
-    size = len(matrix[0])
-    matrix = np.array(matrix)
-    minor_matrix = np.zeros((size, size), dtype=matrix.dtype)
+    for i in range(len(matrix)):
+        if not isinstance(matrix[i], list):
+            raise TypeError("matrix must be a list of lists")
 
-    for i in range(size):
-        for j in range(size):
-            sub_matrix = np.delete(np.delete(matrix, i, axis=0), j, axis=1)
-            minor_matrix[i, j] = np.linalg.det(sub_matrix)
+        if len(matrix) != len(matrix[i]):
+            raise ValueError("matrix must be a non-empty square matrix")
 
-    return minor_matrix
+    if len(matrix) == 1:
+        return [[1]]
+
+    minor_determ = []
+    for i in range(len(matrix)):
+        row = []
+        for j in range(len(matrix)):
+            sub_matrix = [row[:j] + row[j + 1:] for
+                          row in (matrix[:i] + matrix[i + 1:])]
+            row.append(determinant(sub_matrix))
+        minor_determ.append(row)
+
+    return minor_determ
 
 def determinant(matrix):
     """
@@ -41,7 +51,7 @@ def determinant(matrix):
         if len(matrix) != len(matrix[i]):
             raise ValueError("matrix must be a square matrix")
 
-    if len(matrix == 0):
+    if len(matrix) == 0:
         return 1
 
     if len(matrix) == 1 and len(matrix[0]) == 1:
