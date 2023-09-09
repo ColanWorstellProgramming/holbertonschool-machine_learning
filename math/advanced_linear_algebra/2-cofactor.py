@@ -3,7 +3,30 @@
 
 def cofactor(matrix):
     """Co-factor from minor"""
-    
+    if not isinstance(matrix, list) or len(matrix) == 0:
+        raise TypeError("matrix must be a list of lists")
+
+    for i in range(len(matrix)):
+        if not isinstance(matrix[i], list):
+            raise TypeError("matrix must be a list of lists")
+
+        if len(matrix) != len(matrix[i]):
+            raise ValueError("matrix must be a non-empty square matrix")
+
+    if len(matrix) == 1:
+        return [[1]]
+
+    cofactor = []
+
+    for x in range(len(matrix)):
+        row = []
+        for y in range(len(matrix)):
+            sub_matrix = [row[:y] + row[y + 1:] for
+                          row in (matrix[:x] + matrix[x + 1:])]
+            row.append(((-1) ** (x + y)) * determinant(sub_matrix))
+        cofactor.append(row)
+
+    return cofactor
 
 
 def determinant(matrix):
