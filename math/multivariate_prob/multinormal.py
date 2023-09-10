@@ -13,10 +13,12 @@ class MultiNormal:
         """
         Constructor
         """
-        self.d, self.n = data.shape
 
         if not isinstance(data, np.ndarray) or data.ndim != 2:
             raise TypeError('data must be a 2D numpy.ndarray')
+
+        self.d, self.n = data.shape
+
         if self.n < 2:
             raise ValueError('data must contain multiple data poitns')
 
