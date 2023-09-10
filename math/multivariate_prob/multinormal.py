@@ -40,7 +40,7 @@ class MultiNormal:
             raise ValueError('x must have the shape ({}, 1)'.format(var))
 
         x_minus_mean = x - self.mean
-        hold = np.dot(x_minus_mean.T,np.linalg.inv(self.cov))
+        hold = np.dot(x_minus_mean.T, np.linalg.inv(self.cov))
         exponent_term = -0.5 * np.dot(hold, x_minus_mean)
         var = np.sqrt(np.linalg.det(self.cov))
         denominator = (2 * np.pi) ** (self.d / 2) * var
