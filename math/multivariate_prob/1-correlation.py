@@ -14,7 +14,7 @@ def correlation(C):
 
     d, d2 = C.shape
 
-    if d != d2 or len(C.shape) < 2:
+    if d != d2 or len(C.shape) != 2:
         raise ValueError('C must be a 2D square matrix')
 
     std_dev = np.sqrt(np.diag(C))
