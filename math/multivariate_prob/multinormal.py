@@ -35,17 +35,13 @@ class MultiNormal:
             raise TypeError('x must be a numpy.ndarray')
 
         d, d2 = x.shape
-
-        if len(x.shape) != 2:
-            raise ValueError('x must have the shape ({}, 1)'.format(d))
-
-        if d != self.cov.shape[0] or d2 != 1:
-            raise ValueError('x must have the shape ({}, 1)'.format(d))
+        var = self.cov.shape[0]
+        if d != self.cov.shape[0] or d2 != 1 or len(x.shape) != 2:
+            raise ValueError('x must have the shape ({}, 1)'.format(var))
 
         x_minus_mean = x - self.mean
-        exponent_term = -0.5 * np.dot(np.dot(x_minus_mean.T,
-                                             np.linalg.inv(self.cov)),
-                                             x_minus_mean)
+        hold = np.dot(x_minus_mean.T,np.linalg.inv(self.cov))
+        exponent_term = -0.5 * np.dot(hold, x_minus_mean)
         var = np.sqrt(np.linalg.det(self.cov))
         denominator = (2 * np.pi) ** (self.d / 2) * var
         pdf_value = (1 / denominator) * np.exp(exponent_term)
