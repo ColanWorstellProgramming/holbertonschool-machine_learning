@@ -23,7 +23,7 @@ def marginal(x, n, P, Pr):
     if not isinstance(P, np.ndarray) or len(P.shape) != 1:
         raise TypeError('P must be a 1D numpy.ndarray')
 
-    if not isinstance(Pr, np.ndarray) or len(Pr.shape) != len(P.shape):
+    if not isinstance(Pr, np.ndarray) or Pr.shape != P.shape:
         raise TypeError('Pr must be a numpy.ndarray with the same shape as P')
 
     if np.any(P < 0) or np.any(P > 1):
@@ -37,4 +37,4 @@ def marginal(x, n, P, Pr):
 
     factorial = np.math.factorial
     comb = factorial(n) / (factorial(x) * factorial(n - x))
-    return Pr * comb * (P ** x) * ((1 - P) ** (n - x))
+    return np.sum(Pr * comb * (P ** x) * ((1 - P) ** (n - x)))
