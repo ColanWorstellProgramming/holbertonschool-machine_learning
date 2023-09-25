@@ -37,7 +37,7 @@ def kmeans(X, k, iterations=1000):
         cs = np.argmin(np.linalg.norm(X[:, np.newaxis] - cs_cpy, axis=2),
                        axis=1)
 
-        if np.array_equal(cs, cs_cpy):
+        if np.array_equal(centroids, cs_cpy):
             break
 
         centroids = cs_cpy
