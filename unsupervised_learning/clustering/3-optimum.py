@@ -28,15 +28,13 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
         return None, None
 
     results = []
-    vars = []
     d_vars = []
 
     for k in range(kmin, kmax + 1):
         C, clss = kmeans(X, k, iterations)
         results.append((C, clss))
-        vars.append(variance(X, C))
 
-    for var in vars:
-        d_vars.append(vars[0] - var)
+    vars = np.array([variance(X, C) for C, _ in results])
+    d_vars = vars[0] - vars
 
     return results, d_vars
