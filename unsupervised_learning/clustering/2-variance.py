@@ -13,6 +13,8 @@ def variance(X, C):
         return None
     if len(X.shape) != 2 or len(C.shape) != 2:
         return None
+    if X.shape[1] != C.shape[1]:
+        return None
 
     distances = np.sum((X[:, np.newaxis] - C) ** 2, axis=2)
 
