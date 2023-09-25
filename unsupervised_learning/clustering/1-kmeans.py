@@ -9,7 +9,7 @@ def kmeans(X, k, iterations=1000):
     """
     Performs K-means on a dataset
     """
-    if not isinstance(X, np.ndarray) or len(X.shape[0]) != 2 or iterations <= 0:
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None
 
     if not isinstance(iterations, int) or iterations <= 0:
