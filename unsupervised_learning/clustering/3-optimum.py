@@ -35,6 +35,8 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
         results.append((C, clss))
 
     vars = np.array([variance(X, C) for C, _ in results])
+    vars = np.array([0.0 if var is None else var for var in vars])
+
     d_vars = vars[0] - vars
 
     return results, d_vars
