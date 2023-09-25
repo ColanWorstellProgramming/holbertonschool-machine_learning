@@ -9,7 +9,13 @@ def kmeans(X, k, iterations=1000):
     """
     Performs K-means on a dataset
     """
-    if not isinstance(X, np.ndarray) or X.shape[0] < k or iterations <= 0:
+    if not isinstance(X, np.ndarray) or len(X.shape[0]) != 2 or iterations <= 0:
+        return None, None
+
+    if not isinstance(iterations, int) or iterations <= 0:
+        return None, None
+
+    if type(k) is not int or X.shape[0] <= k or k <= 0:
         return None, None
 
     centroids = initialize(X, k)
@@ -29,7 +35,7 @@ def kmeans(X, k, iterations=1000):
                 cs_cpy[i] = initialize(X, 1)
 
         cs = np.argmin(np.linalg.norm(X[:, np.newaxis] - cs_cpy, axis=2),
-                                        axis=1)
+                       axis=1)
 
         if np.array_equal(cs, cs_cpy):
             break
