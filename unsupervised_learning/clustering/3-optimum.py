@@ -30,7 +30,7 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
     if X.ndim != 2:
         return None, None
 
-    if kmax >= kmin:
+    if kmin > kmax:
         return None, None
 
     results = []
