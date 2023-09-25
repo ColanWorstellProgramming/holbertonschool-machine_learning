@@ -11,7 +11,7 @@ def initialize(X, k):
     """
     if not isinstance(X, np.ndarray):
         return None
-    if type(k) is not int or X.shape[0] < k:
+    if type(k) is not int or X.shape[0] <= k or k <= 0:
         return None
 
     min = np.min(X, axis=0)
