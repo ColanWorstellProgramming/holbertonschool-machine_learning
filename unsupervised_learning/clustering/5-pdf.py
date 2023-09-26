@@ -12,7 +12,7 @@ def pdf(X, m, S):
     if not isinstance(X, np.ndarray) or not isinstance(m, np.ndarray):
         return None
 
-    if not isinstance(S, np.ndarray):
+    if not isinstance(S, np.ndarray) or len(X.shape) != 2:
         return None
 
     _, d = X.shape
