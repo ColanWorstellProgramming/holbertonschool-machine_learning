@@ -21,7 +21,6 @@ def initialize(X, k):
 
     S = np.zeros((k, d, d))
 
-    for i in range(k):
-        S[i] = np.identity(d)
+    S[:] = np.eye(d)
 
     return pi, m, S
