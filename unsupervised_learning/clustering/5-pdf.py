@@ -15,7 +15,7 @@ def pdf(X, m, S):
     if not isinstance(S, np.ndarray):
         return None
 
-    _, d = X.shape
+    d = X.shape
 
     if m.shape != (d,) or S.shape != (d, d):
         return None
