@@ -31,7 +31,7 @@ def pdf(X, m, S):
 
     final = np.exp(-0.5 * mahalanobis)
 
-    P = (1 / ((2 * np.pi) ** (d / 2) * np.sqrt(det_S))) * final
+    P = (1 / (np.linalg.det(S) * np.sqrt(2 * np.pi))) ** d
 
     P = np.maximum(P, 1e-300)
 
