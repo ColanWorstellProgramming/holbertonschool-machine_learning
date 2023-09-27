@@ -40,6 +40,6 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
         try:
             d_vars.append(vars[0] - var)
         except:
-            d_vars.append(0.0)
+            TypeError('Float')
 
     return results, d_vars
