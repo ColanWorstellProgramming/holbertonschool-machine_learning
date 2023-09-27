@@ -36,9 +36,9 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         g, llll = expectation(X, pi, m, S)
 
         if abs(llll - lll) <= tol:
-            if verbose == True:
+            if verbose is True:
                 pycode = "Log Likelihood after"
-                print("{} {} iterations:{}".format(pycode, i, llll.round(5)))
+                print("{} {} iterations: {}".format(pycode, i, llll.round(5)))
 
             return pi, m, S, g, llll
 
