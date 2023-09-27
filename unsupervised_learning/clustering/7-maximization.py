@@ -21,6 +21,9 @@ def maximization(X, g):
     n, d = X.shape
     k = g.shape[0]
 
+    if g.shape[1] != n:
+        return None, None, None
+
     pi = np.sum(g, axis=1) / n
 
     m = np.dot(g, X) / np.sum(g, axis=1)[:, np.newaxis]
