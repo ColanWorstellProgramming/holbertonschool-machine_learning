@@ -45,7 +45,6 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         if i < iterations:
             pi, m, S = maximization(X, g)
 
-
         if verbose and i % 10 == 0:
             pycode = "Log Likelihood after"
             print("{} {} iterations: {}".format(pycode, i, llll.round(5)))
