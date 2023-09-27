@@ -3,7 +3,7 @@
 Imports
 """
 import numpy as np
-e_m = __import__('8-EM').expectation_maximization
+expectation_maximization = __import__('8-EM').expectation_maximization
 
 
 def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
@@ -40,6 +40,8 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     for k in range(kmin, kmax + 1):
         if verbose:
             print("Testing {} clusters".format(k))
+
+        e_m = expectation_maximization
 
         pi, m, S, _, log_likelihood = e_m(X, k, iterations, tol, verbose)
 
