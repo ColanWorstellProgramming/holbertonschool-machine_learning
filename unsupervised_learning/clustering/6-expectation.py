@@ -16,6 +16,9 @@ def expectation(X, pi, m, S):
     if not isinstance(m, np.ndarray) or not isinstance(S, np.ndarray):
         return None, None
 
+    if not len(X.shape) != 2 or len(pi.shape) != 1:
+        return None, None
+
     n, d = X.shape
     k = pi.shape[0]
 
@@ -33,6 +36,6 @@ def expectation(X, pi, m, S):
     g = numerator / denominator
 
     log_likelihood = np.log(denominator)
-    l = np.sum(log_likelihood)
+    lll = np.sum(log_likelihood)
 
-    return g, l
+    return g, lll
