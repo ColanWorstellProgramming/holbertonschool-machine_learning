@@ -27,24 +27,27 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     if not isinstance(verbose, bool):
         return None, None, None, None, None
 
-    _, _ = X.shape
     pi, m, S = initialize(X, k)
 
-    for i in range(iterations):
+    lll = 0
 
-        g, l = expectation(X, pi, m, S)
+    for i in range(iterations + 1):
 
-        pi, m, S = maximization(X, g)
+        g, llll = expectation(X, pi, m, S)
 
-        if i > 0 and abs(l - prev_l) <= tol:
-            break
+        if abs(llll - lll) <= tol:
+            if verbose == True:
+                print("Log Likelihood after {} iterations: {}".format(i, llll.round(5)))
 
-        prev_l = l
+            return pi, m, S, g, llll
+
+        if i < iterations:
+            pi, m, S = maximization(X, g)
+
 
         if verbose and i % 10 == 0:
-            print(f"Log Likelihood after {i} iterations: {l:.5f}")
+            print("Log Likelihood after {} iterations: {}".format(i, llll.round(5)))
 
-    if verbose:
-        print(f"Log Likelihood after {i+1} iterations: {l:.5f}")
+        lll = llll
 
-    return pi, m, S, g, l
+    return pi, m, S, g, lll
