@@ -37,8 +37,8 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
 
         if abs(llll - lll) <= tol:
             if verbose == True:
-                print("Log Likelihood after {} iterations:{}"
-                      .format(i, llll.round(5)))
+                pycode = "Log Likelihood after"
+                print("{} {} iterations:{}".format(pycode, i, llll.round(5)))
 
             return pi, m, S, g, llll
 
@@ -47,8 +47,8 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
 
 
         if verbose and i % 10 == 0:
-            print("Log Likelihood after {} iterations: {}"
-                  .format(i, llll.round(5)))
+            pycode = "Log Likelihood after"
+            print("{} {} iterations: {}".format(pycode, i, llll.round(5)))
 
         lll = llll
 
