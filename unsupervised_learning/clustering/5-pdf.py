@@ -25,7 +25,13 @@ def pdf(X, m, S):
     if det_S == 0:
         return None
 
-    P = (1 / (np.linalg.det(S) * np.sqrt(2 * np.pi))) ** d
+    S_inv = np.linalg.inv(S)
+
+    mahalanobis = np.sum(np.dot((X - m), S_inv) * (X - m), axis=1)
+
+    final = np.exp(-0.5 * mahalanobis)
+
+    P = (1 / ((2 * np.pi) ** (d / 2) * np.sqrt(det_S))) * final
 
     P = np.maximum(P, 1e-300)
 
