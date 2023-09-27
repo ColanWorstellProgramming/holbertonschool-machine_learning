@@ -15,6 +15,9 @@ def maximization(X, g):
     if not isinstance(g, np.ndarray) or len(g.shape) != 2:
         return None, None, None
 
+    if False in np.isclose(g.sum(axis=0), np.ones((g.shape[1]))):
+        return None, None, None
+
     n, d = X.shape
     k = g.shape[0]
 
