@@ -7,7 +7,8 @@ import numpy as np
 
 def markov_chain(P, s, t=1):
     """
-    Determines the probability of a markov chain being in a particular state after a specified number of iterations
+    Determines the probability of a markov chain being in a
+    particular state after a specified number of iterations
     """
 
     # iterations are more than 0
@@ -20,7 +21,6 @@ def markov_chain(P, s, t=1):
     # Make sure states are the same number
     if P.shape != (n, n) or s.shape != (1, n):
         return None
-
 
     current_state = s
 
