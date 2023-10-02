@@ -24,7 +24,8 @@ def absorbing(P):
 
     # see if it is in canonical form  / absorbing states in the top-left corner
     absorbing_state_indices = np.where(np.diag(P) == 1)[0]
-    transient_state_indices = np.setdiff1d(np.arange(n), absorbing_state_indices)
+    transient_state_indices = np.setdiff1d(np.arange(n),
+                                           absorbing_state_indices)
 
     if not np.all(transient_state_indices > absorbing_state_indices[-1]):
         return False
