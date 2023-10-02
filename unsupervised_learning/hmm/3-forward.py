@@ -26,7 +26,8 @@ def forward(Observation, Emission, Transition, Initial):
     for t in range(1, T):
         for j in range(N):
             for i in range(N):
-                F[j, t] += F[i, t - 1] * Transition[i, j] * Emission[j, Observation[t]]
+                Py = Emission[j, Observation[t]]
+                F[j, t] += F[i, t - 1] * Transition[i, j] * Py
 
     P = np.sum(F[:, -1])
 
