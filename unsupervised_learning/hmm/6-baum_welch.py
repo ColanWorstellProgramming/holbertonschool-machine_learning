@@ -13,23 +13,29 @@ def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
     T = len(Observations)
 
     for _ in range(iterations):
-        P_forward, alpha = forward(Observations, Emission, Transition, Initial)
-        P_backward, beta = backward(Observations, Emission, Transition, Initial)
+        P_forward, alpha = forward(Observations, Emission,
+                                   Transition, Initial)
+        P_backward, beta = backward(Observations, Emission,
+                                    Transition, Initial)
 
         if P_forward is None or P_backward is None:
             return None, None
 
         xi = np.zeros((M, M, T - 1))
         for t in range(T - 1):
-            denominator = np.dot(np.dot(alpha[:, t].T, Transition) * Emission[:, Observations[t + 1]].T, beta[:, t + 1])
+            denominator = np.dot(np.dot(alpha[:, t].T, Transition) *
+                                 Emission[:, Observations[t + 1]].T,
+                                 beta[:, t + 1])
             for i in range(M):
-                numerator = alpha[i, t] * Transition[i, :] * Emission[:, Observations[t + 1]].T * beta[:, t + 1]
+                Py = Emission[:, Observations[t + 1]].T * beta[:, t + 1]
+                numerator = alpha[i, t] * Transition[i, :] * Py
                 xi[i, :, t] = numerator / denominator
 
         gamma = np.sum(xi, axis=1)
         Transition = np.sum(xi, 2) / np.sum(gamma, axis=1).reshape((-1, 1))
 
-        gamma = np.hstack((gamma, np.sum(xi[:, :, T - 2], axis=0).reshape((-1, 1))))
+        gamma = np.hstack((gamma, np.sum(xi[:, :, T - 2],
+                                         axis=0).reshape((-1, 1))))
 
         K = Emission.shape[1]
         denominator = np.sum(gamma, axis=1)
@@ -88,7 +94,8 @@ def backward(Observation, Emission, Transition, Initial):
     for t in range(T - 2, -1, -1):
         for i in range(N):
             for j in range(N):
-                B[i, t] += Transition[i, j] * Emission[j, Observation[t + 1]] * B[j, t + 1]
+                Py = Emission[j, Observation[t + 1]] * B[j, t + 1]
+                B[i, t] += Transition[i, j] * Py
 
     P = np.sum(Initial[:, 0] * Emission[:, Observation[0]] * B[:, 0])
 
