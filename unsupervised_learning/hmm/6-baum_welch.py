@@ -46,6 +46,7 @@ def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
 
     return Transition, Emission
 
+
 def forward(Observation, Emission, Transition, Initial):
     """
     Performs the forward algorithm for a hidden markov model
@@ -73,6 +74,7 @@ def forward(Observation, Emission, Transition, Initial):
     P = np.sum(F[:, -1])
 
     return P, F
+
 
 def backward(Observation, Emission, Transition, Initial):
     """
