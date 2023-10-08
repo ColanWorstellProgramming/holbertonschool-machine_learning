@@ -41,9 +41,15 @@ class BayesianOptimization:
 
             self.gp.update(X_next, Y_next)
 
-            if Y_opt is None or (self.minimize and Y_next < Y_opt) or (not self.minimize and Y_next > Y_opt):
+            if Y_opt is None or (self.minimize and Y_next < Y_opt):
                 X_opt = X_next
                 Y_opt = Y_next
+
+            if Y_opt is (not self.minimize and Y_next > Y_opt):
+                X_opt = X_next
+                Y_opt = Y_next
+
+        self.gp.X = self.gp.X[:-1]
 
         return X_opt, Y_opt
 
