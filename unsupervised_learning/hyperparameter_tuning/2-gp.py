@@ -24,7 +24,9 @@ class GaussianProcess:
         Updates a Gaussian Process
         """
         self.X = np.append(self.X, X_new)
+        self.X = self.X[:, np.newaxis]
         self.Y = np.append(self.Y, Y_new)
+        self.Y = self.Y[:, np.newaxis]
         self.K = self.kernel(self.X, self.X)
 
     def predict(self, X_s):
