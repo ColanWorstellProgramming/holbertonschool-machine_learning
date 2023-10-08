@@ -13,8 +13,8 @@ class GaussianProcess:
         """
         Represents a noiseless 1D Gaussian process
         """
-        self.X_init = X_init
-        self.Y_init = Y_init
+        self.X = X_init
+        self.Y = Y_init
         self.l = l
         self.sigma_f = sigma_f
         self.K = self.kernel(X_init, X_init)

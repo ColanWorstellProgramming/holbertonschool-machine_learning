@@ -14,8 +14,8 @@ if __name__ == '__main__':
     Y_init = f(X_init)
 
     gp = GP(X_init, Y_init, l=0.6, sigma_f=2)
-    print(gp.X_init is X_init) # Edited to work locally
-    print(gp.Y_init is Y_init) # Edited to work locally
+    print(gp.X is X_init)
+    print(gp.Y is Y_init)
     print(gp.l)
     print(gp.sigma_f)
     print(gp.K.shape, gp.K)
