@@ -2,10 +2,11 @@
 """
 Imports
 """
+import os
 import GPyOpt
 import numpy as np
-import os
 import tensorflow as tf
+from tensorflow.examples.tutorials.mnist import input_data
 
 
 # Define the objective function to optimize (this should be your model training process)
@@ -67,6 +68,10 @@ def build_model(best_hyperparameters):
 
 
 if __name__ == '__main__':
+    data = input_data.read_data_sets('data/fashion', source_url='http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/')
+
+    data.train.next_batch(BATCH_SIZE)
+
     # Define the hyperparameter search space
     domain = [
         {'name': 'learning_rate', 'type': 'continuous', 'domain': (0.001, 0.1)},
