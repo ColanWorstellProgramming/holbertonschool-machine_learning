@@ -15,7 +15,8 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         sampling
         """
         z_mean, z_log_var = args
-        epsilon = keras.backend.random_normal(shape=keras.backend.shape(z_mean))
+        shp = keras.backend.shape(z_mean)
+        epsilon = keras.backend.random_normal(shape=shp)
         return z_mean + keras.backend.exp(0.5 * z_log_var) * epsilon
 
     input_img = keras.Input(shape=(input_dims,))
@@ -24,10 +25,13 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     for units in hidden_layers:
         x = keras.layers.Dense(units, activation='relu')(x)
 
-    z_mean = keras.layers.Dense(latent_dims, activation=None, name="z_mean")(x)
-    z_log_var = keras.layers.Dense(latent_dims, activation=None, name="z_log_var")(x)
+    z_mean = keras.layers.Dense(latent_dims, activation=None,
+                                name="z_mean")(x)
+    z_log_var = keras.layers.Dense(latent_dims, activation=None,
+                                   name="z_log_var")(x)
 
-    z = keras.layers.Lambda(sampling, output_shape=(latent_dims,), name="z")([z_mean, z_log_var])
+    z = keras.layers.Lambda(sampling, output_shape=(latent_dims,),
+                            name="z")([z_mean, z_log_var])
 
     encoder = keras.models.Model(input_img, [z, z_mean, z_log_var])
 
