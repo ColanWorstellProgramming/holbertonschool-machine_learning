@@ -20,7 +20,7 @@ def bi_rnn(bi_cell, X, h_0, h_t):
 
     for step in range(t):
         fw[step + 1] = bi_cell.forward(fw[step], X[step])
-        bw[-step - 2] = bi_cell.backward(bw[-step -1], X[-step - 1])
+        bw[-step - 2] = bi_cell.backward(bw[-step - 1], X[-step - 1])
 
     H = np.concatenate((fw[1:], bw[:-1]), axis=-1)
 
