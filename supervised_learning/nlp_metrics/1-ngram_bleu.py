@@ -11,13 +11,14 @@ def ngram_bleu(references, sentence, n):
     ngram bleu
     """
     candidate_ngrams = Counter(zip(*[sentence[i:] for i in range(n)]))
-    max_reference_ngrams = Counter()
+    mrn = Counter()
 
     for ref in references:
         reference_ngrams = Counter(zip(*[ref[i:] for i in range(n)]))
-        max_reference_ngrams += reference_ngrams
+        mrn += reference_ngrams
 
-    cc = {ngram: min(candidate_ngrams[ngram], max_reference_ngrams[ngram]) for ngram in candidate_ngrams}
+    cc = {ngram: min(candidate_ngrams[ngram],
+                     mrn[ngram]) for ngram in candidate_ngrams}
 
     precision = sum(cc.values()) / max(1, sum(candidate_ngrams.values()))
 
