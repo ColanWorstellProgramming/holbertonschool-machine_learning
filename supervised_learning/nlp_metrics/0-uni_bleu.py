@@ -15,9 +15,8 @@ def uni_bleu(references, sentence):
     precision = total_cc / len(sentence) if len(sentence) > 0 else 0
 
     cl = min(len(ref) for ref in references)
-    bp = np.exp(1 - (cl / len(sentence))) if len(sentence) < cl else 1
 
-    bp = bp * 2
+    bp = np.exp(1 - (cl / len(sentence))) if len(sentence) < cl else 1
 
     bleu = bp * precision
 
