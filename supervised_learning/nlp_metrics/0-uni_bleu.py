@@ -10,7 +10,7 @@ def uni_bleu(references, sentence):
     uni bleu
     """
     cc = {word: min([ref.count(word) for ref in references],
-                                  default=0) for word in sentence}
+                    default=0) for word in sentence}
     total_cc = sum(cc.values())
     precision = total_cc / len(sentence) if len(sentence) > 0 else 0
 
