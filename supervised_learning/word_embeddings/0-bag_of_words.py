@@ -9,7 +9,6 @@ def bag_of_words(sentences, vocab=None):
     """
     bag of words
     """
-
     vectorizer = CountVectorizer(vocabulary=vocab)
 
     embeddings = vectorizer.fit_transform(sentences).toarray()
