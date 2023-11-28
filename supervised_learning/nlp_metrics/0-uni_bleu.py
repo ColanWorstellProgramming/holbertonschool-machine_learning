@@ -17,6 +17,6 @@ def uni_bleu(references, sentence):
     closest_length = min(len(ref) for ref in references)
     brevity_penalty = np.exp(1 - (closest_length / len(sentence))) if len(sentence) < closest_length else 1
 
-    bleu = brevity_penalty * precision * 2
+    bleu = brevity_penalty * precision
 
     return bleu
