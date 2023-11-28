@@ -14,6 +14,10 @@ def tf_idf(sentences, vocab=None):
 
     embeddings = vectorizer.fit_transform(sentences).toarray()
 
-    features = vectorizer.get_feature_names_out()
+    if vocab is None:
+        features = sorted(list(set(vectorizer.get_feature_names_out())))
+
+    else:
+        features = vocab
 
     return embeddings, features
