@@ -19,7 +19,7 @@ def semantic_search(corpus_path, sentence):
     file_names = []
     for file_name in os.listdir(corpus_path):
         file_path = os.path.join(corpus_path, file_name)
-        with open(file_path, "r", encoding="utf-8") as file:
+        with open(file_path, "r", encoding="ISO-8859-1") as file:
             text = file.read()
             corpus.append(text)
             file_names.append(file_name)
@@ -29,8 +29,9 @@ def semantic_search(corpus_path, sentence):
     corpus_tokens = tokenizer(corpus, return_tensors="pt", padding=True, truncation=True)["input_ids"]
 
     with torch.no_grad():
-        sentence_embedding = model(**sentence_tokens).last_hidden_state.mean(dim=1)
-        corpus_embeddings = model(**corpus_tokens).last_hidden_state.mean(dim=1)
+        sentence_embedding = model(sentence_tokens).last_hidden_state.mean(dim=1)
+        corpus_embeddings = model(corpus_tokens).last_hidden_state.mean(dim=1)
+
 
     similarities = cosine_similarity(sentence_embedding, corpus_embeddings).flatten()
 

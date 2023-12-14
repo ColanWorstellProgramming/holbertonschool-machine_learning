@@ -15,13 +15,14 @@ def question_answer(corpus_path):
     file_names = []
     for file_name in os.listdir(corpus_path):
         file_path = os.path.join(corpus_path, file_name)
-        with open(file_path, "r", encoding="utf-8") as file:
+        with open(file_path, "r", encoding="ISO-8859-1") as file:
             text = file.read()
             corpus.append(text)
             file_names.append(file_name)
 
+
     while True:
-        question = input("Ask a question (type 'exit' to end): ")
+        question = input("Q: ")
 
         if question.lower() == 'exit':
             break
@@ -30,5 +31,4 @@ def question_answer(corpus_path):
 
         answer = qa_pipeline(question=question, context=corpus_text)
 
-        print(f"Answer: {answer['answer']}")
-        print(f"Context: {file_names[corpus.index(answer['document'])]}\n")
+        print(f"A: {answer['answer']}")
